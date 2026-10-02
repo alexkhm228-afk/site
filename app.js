@@ -1,61 +1,41 @@
-const labels = {
-  place: { home: "Дома", gym: "В зале", outdoor: "На площадке" },
-  level: { beginner: "Новичок", intermediate: "Средний", advanced: "Продвинутый" },
-  goal: {
-    mobility: "Мобильность", strength: "Сила", posture: "Осанка",
-    flexibility: "Гибкость", endurance: "Выносливость", fullbody: "Всё тело"
-  },
-  type: { warmup: "Разминка", main: "Основная часть", cooldown: "Заминка" }
+const goalFocusWeights = {
+  mobility: { mobility: 8, flexibility: 4, posture: 3, core: 1 },
+  strength: { legs: 6, push: 6, pull: 6, core: 4, hinge: 5, posture: 1 },
+  posture: { posture: 8, pull: 6, core: 5, mobility: 4, flexibility: 2 },
+  flexibility: { flexibility: 9, mobility: 7, posture: 2, recovery: 2 },
+  endurance: { cardio: 10, legs: 4, fullbody: 5, core: 2 },
+  fullbody: { legs: 5, push: 5, pull: 5, core: 5, cardio: 4, hinge: 4, mobility: 2 }
 };
 
-const exercises = [
-  {id:"march", name:"Шаг на месте", type:"warmup", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["mobility","endurance","fullbody"], dose:"60 сек", desc:"Спокойный шаг с активной работой рук и ровным дыханием."},
-  {id:"joints", name:"Суставная разминка", type:"warmup", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["mobility","flexibility","posture","fullbody"], dose:"2 мин", desc:"Плавные круговые движения плечами, тазом, коленями и голеностопом."},
-  {id:"arm-circles", name:"Круги руками", type:"warmup", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["mobility","posture","fullbody"], dose:"40 сек", desc:"Постепенно увеличивай амплитуду, не поднимай плечи к ушам."},
-  {id:"cat-cow", name:"Кошка–корова", type:"warmup", places:["home","gym"], levels:["beginner","intermediate","advanced"], goals:["mobility","posture","flexibility"], dose:"8–10 раз", desc:"Плавно чередуй округление и разгибание позвоночника на четвереньках."},
-  {id:"hip-openers", name:"Раскрытие тазобедренных", type:"warmup", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["mobility","flexibility","fullbody"], dose:"8/сторону", desc:"Подними колено и мягко отведи его в сторону, удерживая корпус ровно."},
-  {id:"jumping-jacks", name:"Лёгкие джампинг-джэки", type:"warmup", places:["home","gym","outdoor"], levels:["intermediate","advanced"], goals:["endurance","fullbody"], dose:"45 сек", desc:"Пружинистые прыжки с разведением ног и рук. Приземляйся мягко."},
+const mainPatterns = {
+  mobility: ["mobility","posture","mobility","core","flexibility","mobility","posture","mobility","core"],
+  strength: ["legs","push","pull","core","hinge","legs","push","pull","core"],
+  posture: ["posture","pull","core","mobility","posture","core","pull","mobility","posture"],
+  flexibility: ["mobility","flexibility","mobility","flexibility","posture","mobility","flexibility","core","mobility"],
+  endurance: ["cardio","legs","cardio","fullbody","core","cardio","legs","cardio","fullbody"],
+  fullbody: ["legs","push","pull","core","cardio","hinge","legs","push","pull"]
+};
 
-  {id:"chair-squat", name:"Приседание к стулу", type:"main", places:["home","gym"], levels:["beginner","intermediate","advanced"], goals:["strength","posture","fullbody"], dose:"10–15 раз", desc:"Отводи таз назад, колени направляй по линии стоп, касайся стула легко."},
-  {id:"wall-push", name:"Отжимания от стены", type:"main", places:["home","gym"], levels:["beginner","intermediate","advanced"], goals:["strength","posture","fullbody"], dose:"10–15 раз", desc:"Тело держи прямой линией, локти веди назад под комфортным углом."},
-  {id:"incline-push", name:"Отжимания от опоры", type:"main", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["strength","fullbody"], dose:"8–15 раз", desc:"Используй устойчивую опору. Чем она ниже, тем выше нагрузка."},
-  {id:"glute-bridge", name:"Ягодичный мост", type:"main", places:["home","gym"], levels:["beginner","intermediate","advanced"], goals:["strength","posture","fullbody"], dose:"12–18 раз", desc:"Поднимай таз за счёт ягодиц, сохраняя нейтральное положение поясницы."},
-  {id:"bird-dog", name:"Bird-dog", type:"main", places:["home","gym"], levels:["beginner","intermediate","advanced"], goals:["posture","strength","mobility"], dose:"8/сторону", desc:"Вытягивай противоположные руку и ногу, не разворачивая таз."},
-  {id:"dead-bug", name:"Dead bug", type:"main", places:["home","gym"], levels:["beginner","intermediate","advanced"], goals:["posture","strength","fullbody"], dose:"8/сторону", desc:"Сохраняй поясницу стабильно при движении противоположных руки и ноги."},
-  {id:"knee-plank", name:"Планка с колен", type:"main", places:["home","gym"], levels:["beginner","intermediate"], goals:["strength","posture","fullbody"], dose:"20–35 сек", desc:"Локти под плечами, корпус от колен до головы держи одной линией."},
-  {id:"plank", name:"Планка", type:"main", places:["home","gym","outdoor"], levels:["intermediate","advanced"], goals:["strength","posture","fullbody"], dose:"30–60 сек", desc:"Не провисай в пояснице и не задерживай дыхание."},
-  {id:"reverse-lunge", name:"Обратные выпады", type:"main", places:["home","gym","outdoor"], levels:["intermediate","advanced"], goals:["strength","fullbody","endurance"], dose:"8–12/нога", desc:"Шагай назад достаточно далеко, чтобы передняя стопа оставалась устойчивой."},
-  {id:"calf-raise", name:"Подъёмы на носки", type:"main", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["strength","fullbody"], dose:"15–20 раз", desc:"Поднимайся плавно, контролируй опускание и держись за опору при необходимости."},
-  {id:"wall-sit", name:"Стульчик у стены", type:"main", places:["home","gym"], levels:["intermediate","advanced"], goals:["strength","endurance"], dose:"30–45 сек", desc:"Спина прижата к стене, колени направлены по линии носков."},
+const warmPatterns = {
+  mobility: ["mobility","posture","mobility"], strength: ["mobility","cardio","mobility"],
+  posture: ["posture","mobility","posture"], flexibility: ["mobility","flexibility","mobility"],
+  endurance: ["cardio","mobility","cardio"], fullbody: ["cardio","mobility","cardio"]
+};
 
-  {id:"goblet-squat", name:"Присед с гантелью у груди", type:"main", places:["gym"], levels:["intermediate","advanced"], goals:["strength","fullbody"], dose:"8–12 раз", desc:"Держи гантель близко к груди, сохраняй устойчивую стопу и нейтральную спину."},
-  {id:"db-row", name:"Тяга гантели в наклоне", type:"main", places:["gym"], levels:["beginner","intermediate","advanced"], goals:["strength","posture"], dose:"10–12/рука", desc:"Тяни локоть назад, не вращай корпус, шея остаётся продолжением спины."},
-  {id:"db-press", name:"Жим гантелей лёжа", type:"main", places:["gym"], levels:["beginner","intermediate","advanced"], goals:["strength","fullbody"], dose:"8–12 раз", desc:"Лопатки собраны, стопы устойчиво стоят на полу, движение контролируемое."},
-  {id:"step-up", name:"Зашагивания на платформу", type:"main", places:["gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["strength","endurance","fullbody"], dose:"8–12/нога", desc:"Ставь всю стопу на опору и поднимайся без резкого отталкивания второй ногой."},
-  {id:"cable-row", name:"Горизонтальная тяга блока", type:"main", places:["gym"], levels:["beginner","intermediate","advanced"], goals:["strength","posture"], dose:"10–15 раз", desc:"Тяни рукоять к нижним рёбрам, удерживая грудную клетку раскрытой."},
-  {id:"bike", name:"Велотренажёр", type:"main", places:["gym"], levels:["beginner","intermediate","advanced"], goals:["endurance","fullbody"], dose:"4–8 мин", desc:"Поддерживай темп, при котором дыхание учащается, но остаётся контролируемым."},
+const coolPatterns = {
+  mobility: ["flexibility","mobility","recovery","flexibility"], strength: ["flexibility","recovery","mobility","flexibility"],
+  posture: ["posture","flexibility","recovery","mobility"], flexibility: ["flexibility","mobility","flexibility","recovery"],
+  endurance: ["recovery","flexibility","mobility","recovery"], fullbody: ["flexibility","recovery","mobility","flexibility"]
+};
 
-  {id:"bench-squat", name:"Приседание к скамье", type:"main", places:["outdoor"], levels:["beginner","intermediate","advanced"], goals:["strength","fullbody"], dose:"12–15 раз", desc:"Используй скамью как ориентир глубины, касайся её без полного расслабления."},
-  {id:"bar-hang", name:"Вис на перекладине", type:"main", places:["outdoor","gym"], levels:["beginner","intermediate","advanced"], goals:["strength","posture","mobility"], dose:"15–30 сек", desc:"Начни с комфортного хвата. При дискомфорте в плечах сразу прекрати."},
-  {id:"scap-pull", name:"Лопаточные подтягивания", type:"main", places:["outdoor","gym"], levels:["intermediate","advanced"], goals:["strength","posture"], dose:"6–10 раз", desc:"Не сгибая локти, мягко опускай плечи от ушей и поднимай тело за счёт лопаток."},
-  {id:"assisted-pull", name:"Подтягивания с опорой", type:"main", places:["outdoor","gym"], levels:["intermediate","advanced"], goals:["strength","fullbody"], dose:"5–10 раз", desc:"Используй низкую перекладину или резину для снижения нагрузки."},
-  {id:"bench-dip", name:"Отжимания от скамьи", type:"main", places:["outdoor","gym"], levels:["intermediate","advanced"], goals:["strength"], dose:"6–12 раз", desc:"Сохраняй плечи опущенными и работай только в комфортной амплитуде."},
-  {id:"mountain-climber", name:"Скалолаз", type:"main", places:["home","gym","outdoor"], levels:["intermediate","advanced"], goals:["endurance","fullbody","strength"], dose:"30–45 сек", desc:"Опирайся ладонями под плечами и поочерёдно подтягивай колени без раскачивания таза."},
-  {id:"high-knees", name:"Высокие колени", type:"main", places:["home","gym","outdoor"], levels:["intermediate","advanced"], goals:["endurance","fullbody"], dose:"30–45 сек", desc:"Держи корпус высокий и приземляйся на стопу мягко."},
-
-  {id:"chest-open", name:"Раскрытие грудного отдела", type:"main", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["posture","mobility","flexibility"], dose:"8–10 раз", desc:"Сведи руки за спиной или у стены, мягко раскрывая грудную клетку без боли."},
-  {id:"thoracic-rot", name:"Повороты грудного отдела", type:"main", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["mobility","posture","flexibility"], dose:"8/сторону", desc:"Поворачивай грудную клетку, сохраняя таз стабильным."},
-  {id:"world-stretch", name:"Выпад с ротацией", type:"main", places:["home","gym","outdoor"], levels:["intermediate","advanced"], goals:["mobility","flexibility","fullbody"], dose:"5/сторону", desc:"Из выпада поверни корпус к передней ноге, не торопись и дыши спокойно."},
-  {id:"hamstring-fold", name:"Наклон к прямой ноге", type:"cooldown", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["flexibility","mobility","fullbody"], dose:"30 сек/нога", desc:"Наклоняйся от таза с длинной спиной, без пружинящих движений."},
-  {id:"quad-stretch", name:"Растяжка передней поверхности бедра", type:"cooldown", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["flexibility","mobility","fullbody"], dose:"30 сек/нога", desc:"Колени рядом, таз слегка подкручен, не тяни стопу через боль."},
-  {id:"child-pose", name:"Поза ребёнка", type:"cooldown", places:["home","gym"], levels:["beginner","intermediate","advanced"], goals:["mobility","flexibility","posture","fullbody"], dose:"45 сек", desc:"Опусти таз к пяткам и спокойно вытяни руки вперёд."},
-  {id:"breathing", name:"Спокойное дыхание", type:"cooldown", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["mobility","posture","flexibility","endurance","strength","fullbody"], dose:"60 сек", desc:"Сделай несколько медленных вдохов носом и длинных спокойных выдохов."},
-  {id:"pec-stretch", name:"Растяжка грудных мышц", type:"cooldown", places:["home","gym","outdoor"], levels:["beginner","intermediate","advanced"], goals:["posture","flexibility","mobility"], dose:"30 сек/сторону", desc:"Используй стену или стойку, плечо не поднимай к уху."}
-];
-
-const levelRank = { beginner: 1, intermediate: 2, advanced: 3 };
 let lastSelection = null;
+let lastWorkoutIds = new Set();
 let variantSeed = 0;
+
+function profileFor(ex) {
+  const raw = profileData[ex.id] || [1, "fullbody"];
+  return { difficulty: raw[0], focus: raw[1].split(",") };
+}
 
 function getSelection() {
   const form = new FormData(document.getElementById("workoutForm"));
@@ -67,75 +47,148 @@ function getSelection() {
   };
 }
 
-function supportsLevel(ex, selectedLevel) {
-  const allowed = ex.levels.map(l => levelRank[l]);
-  return allowed.some(rank => rank <= levelRank[selectedLevel]);
+function hash01(value) {
+  let h = 2166136261;
+  for (let i = 0; i < value.length; i++) {
+    h ^= value.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return (h >>> 0) / 4294967295;
 }
 
-function shuffleDeterministic(array, seed) {
-  return [...array].sort((a,b) => {
-    const av = (a.id.charCodeAt(0) + a.id.length * 17 + seed * 31) % 97;
-    const bv = (b.id.charCodeAt(0) + b.id.length * 17 + seed * 31) % 97;
-    return av - bv;
+function phasePlan(sel) {
+  const plans = {
+    10: { warm: 1, main: 3, cool: 1 },
+    20: { warm: 2, main: 5, cool: 1 },
+    30: { warm: 2, main: 7, cool: 2 },
+    45: { warm: 3, main: 9, cool: 2 }
+  };
+  const plan = { ...plans[sel.duration] };
+
+  if (sel.goal === "flexibility") {
+    plan.main = Math.max(2, plan.main - 1);
+    plan.cool += 1;
+  } else if (sel.goal === "mobility" && sel.duration >= 20) {
+    plan.main = Math.max(3, plan.main - 1);
+    plan.cool += 1;
+  } else if (sel.goal === "endurance" && sel.duration >= 30) {
+    plan.main += 1;
+    plan.cool = Math.max(1, plan.cool - 1);
+  }
+  return plan;
+}
+
+function roundsFor(sel) {
+  const base = { 10: 1, 20: 2, 30: 2, 45: 3 }[sel.duration];
+  if (sel.level === "advanced" && sel.duration >= 30 && (sel.goal === "strength" || sel.goal === "endurance")) {
+    return Math.min(3, base + 1);
+  }
+  return base;
+}
+
+function restFor(sel) {
+  if (sel.goal === "endurance") return sel.level === "beginner" ? "30–45 сек" : "20–30 сек";
+  if (sel.goal === "strength") return sel.level === "advanced" ? "45–75 сек" : "45–60 сек";
+  return sel.level === "beginner" ? "30–45 сек" : "20–40 сек";
+}
+
+function availableExercises(sel, type) {
+  const rank = levelRank[sel.level];
+  return exercises.filter(ex => {
+    const p = profileFor(ex);
+    return ex.type === type && ex.places.includes(sel.place) && p.difficulty <= rank;
   });
 }
 
-function buildWorkout(sel, seed=0) {
-  const perDuration = {
-    10: { warm: 1, main: 3, cool: 1, rounds: 1 },
-    20: { warm: 2, main: 5, cool: 1, rounds: 2 },
-    30: { warm: 2, main: 6, cool: 2, rounds: 2 },
-    45: { warm: 3, main: 8, cool: 2, rounds: 3 }
-  }[sel.duration];
+function scoreExercise(ex, sel, targetFocus, seed, avoidIds, focusCounts) {
+  const p = profileFor(ex);
+  const rank = levelRank[sel.level];
+  let score = 0;
 
-  const base = exercises.filter(ex => ex.places.includes(sel.place) && supportsLevel(ex, sel.level));
-  const goalMatches = base.filter(ex => ex.goals.includes(sel.goal));
+  score += ex.goals.includes(sel.goal) ? 18 : -5;
+  if (p.focus.includes(targetFocus)) score += 16;
 
-  const warmPool = goalMatches.filter(ex => ex.type === "warmup");
-  const mainPool = goalMatches.filter(ex => ex.type === "main");
-  const coolPool = goalMatches.filter(ex => ex.type === "cooldown");
+  const weights = goalFocusWeights[sel.goal] || {};
+  p.focus.forEach(f => { score += (weights[f] || 0) * 0.9; });
 
-  const fallbackWarm = base.filter(ex => ex.type === "warmup");
-  const fallbackMain = base.filter(ex => ex.type === "main");
-  const fallbackCool = base.filter(ex => ex.type === "cooldown");
+  // Место занятия должно реально менять подбор: специфичные упражнения получают приоритет.
+  score += ex.places.length === 1 ? 9 : ex.places.length === 2 ? 5 : 1;
 
-  function take(primary, fallback, count, offset) {
-    const merged = [...primary, ...fallback.filter(x => !primary.some(p => p.id === x.id))];
-    return shuffleDeterministic(merged, seed + offset).slice(0, count);
-  }
+  // Уровень тоже влияет: на среднем/продвинутом приоритет у более сложных вариантов.
+  if (p.difficulty === rank) score += 10;
+  else score -= (rank - p.difficulty) * 2.5;
 
-  const items = [
-    ...take(warmPool, fallbackWarm, perDuration.warm, 1),
-    ...take(mainPool, fallbackMain, perDuration.main, 2),
-    ...take(coolPool, fallbackCool, perDuration.cool, 3)
-  ];
+  if (avoidIds.has(ex.id)) score -= 12;
+  const overuse = Math.max(...p.focus.map(f => focusCounts[f] || 0), 0);
+  score -= overuse * 3.5;
 
-  return { items, rounds: perDuration.rounds };
+  score += hash01(`${ex.id}|${sel.place}|${sel.level}|${sel.goal}|${sel.duration}|${seed}|${targetFocus}`) * 11;
+  return score;
 }
 
-function renderWorkout(sel, seed=0) {
+function choosePhase(pool, pattern, count, sel, seed, avoidIds) {
+  const chosen = [];
+  const used = new Set();
+  const focusCounts = {};
+
+  for (let i = 0; i < count; i++) {
+    const target = pattern[i % pattern.length];
+    let candidates = pool.filter(ex => !used.has(ex.id));
+    if (!candidates.length) break;
+
+    candidates = candidates
+      .map(ex => ({ ex, score: scoreExercise(ex, sel, target, seed + i * 17, avoidIds, focusCounts) }))
+      .sort((a, b) => b.score - a.score);
+
+    const pick = candidates[0].ex;
+    chosen.push(pick);
+    used.add(pick.id);
+    profileFor(pick).focus.forEach(f => { focusCounts[f] = (focusCounts[f] || 0) + 1; });
+  }
+
+  return chosen;
+}
+
+function buildWorkout(sel, seed = 0, avoidIds = new Set()) {
+  const plan = phasePlan(sel);
+  const warm = choosePhase(availableExercises(sel, "warmup"), warmPatterns[sel.goal], plan.warm, sel, seed + 101, avoidIds);
+  const main = choosePhase(availableExercises(sel, "main"), mainPatterns[sel.goal], plan.main, sel, seed + 211, avoidIds);
+  const cool = choosePhase(availableExercises(sel, "cooldown"), coolPatterns[sel.goal], plan.cool, sel, seed + 307, avoidIds);
+
+  return {
+    items: [...warm, ...main, ...cool],
+    rounds: roundsFor(sel),
+    rest: restFor(sel),
+    plan
+  };
+}
+
+function renderWorkout(sel, seed = 0, avoidIds = new Set()) {
   const result = document.getElementById("result");
   const list = document.getElementById("workoutList");
   const title = document.getElementById("resultTitle");
   const meta = document.getElementById("resultMeta");
-  const workout = buildWorkout(sel, seed);
+  const workout = buildWorkout(sel, seed, avoidIds);
 
   title.textContent = `${labels.place[sel.place]} · ${labels.goal[sel.goal]}`;
-  meta.textContent = `${labels.level[sel.level]} · ${sel.duration} минут · ${workout.rounds} ${workout.rounds === 1 ? "круг" : workout.rounds < 5 ? "круга" : "кругов"}`;
+  meta.textContent = `${labels.level[sel.level]} · ${sel.duration} минут · основная часть ${workout.rounds} ${workout.rounds === 1 ? "круг" : "круга"} · отдых ${workout.rest}`;
 
   list.innerHTML = workout.items.map((ex, index) => {
     const phase = labels.type[ex.type];
+    const difficulty = levelNamesShort[profileFor(ex).difficulty];
     return `
-      <article class="workout-item">
+      <button class="workout-item" type="button" data-exercise-id="${ex.id}" aria-label="Открыть инструкцию: ${ex.name}">
         <div class="workout-number">${String(index + 1).padStart(2,"0")}</div>
         <div>
           <strong>${ex.name}</strong>
-          <small>${phase} · ${ex.desc}</small>
+          <small>${phase} · ${difficulty} · ${ex.desc}</small>
+          <span class="instruction-link">Инструкция →</span>
         </div>
         <div class="workout-dose">${ex.dose}</div>
-      </article>`;
+      </button>`;
   }).join("");
 
+  lastWorkoutIds = new Set(workout.items.map(ex => ex.id));
   result.classList.remove("hidden");
   result.scrollIntoView({ behavior:"smooth", block:"start" });
 }
@@ -151,7 +204,7 @@ function renderCatalog() {
   );
 
   grid.innerHTML = filtered.map(ex => `
-    <article class="exercise-card">
+    <button class="exercise-card" type="button" data-exercise-id="${ex.id}" aria-label="Открыть инструкцию: ${ex.name}">
       <div class="exercise-card-top">
         <div>
           <h3>${ex.name}</h3>
@@ -165,25 +218,107 @@ function renderCatalog() {
       <p>${ex.desc}</p>
       <div class="tags">
         <span class="tag">${ex.dose}</span>
+        <span class="tag">${levelNamesShort[profileFor(ex).difficulty]}</span>
         ${ex.goals.slice(0,2).map(g => `<span class="tag">${labels.goal[g]}</span>`).join("")}
       </div>
-    </article>`).join("");
+      <span class="card-action">Открыть инструкцию →</span>
+    </button>`).join("");
+}
+
+function ensureExerciseModal() {
+  if (document.getElementById("exerciseModal")) return;
+  const modal = document.createElement("div");
+  modal.id = "exerciseModal";
+  modal.className = "exercise-modal hidden";
+  modal.innerHTML = `
+    <div class="exercise-modal-backdrop" data-close-modal></div>
+    <section class="exercise-dialog" role="dialog" aria-modal="true" aria-labelledby="exerciseModalTitle">
+      <button class="modal-close" type="button" data-close-modal aria-label="Закрыть инструкцию">×</button>
+      <div id="exerciseModalContent"></div>
+    </section>`;
+  document.body.appendChild(modal);
+
+  modal.addEventListener("click", e => {
+    if (e.target.closest("[data-close-modal]")) closeExerciseModal();
+  });
+}
+
+function openExerciseModal(id) {
+  const ex = exercises.find(item => item.id === id);
+  if (!ex) return;
+  ensureExerciseModal();
+  const modal = document.getElementById("exerciseModal");
+  const content = document.getElementById("exerciseModalContent");
+  const guide = exerciseGuides[id] || g(`${ex.desc}|Выполняй движение медленно и под контролем.|Остановись, если появляется боль.`, "Сохраняй свободное дыхание.", "Не увеличивай амплитуду ценой техники.");
+  const p = profileFor(ex);
+
+  content.innerHTML = `
+    <p class="eyebrow">Инструкция к упражнению</p>
+    <h2 id="exerciseModalTitle">${ex.name}</h2>
+    <div class="modal-tags tags">
+      <span class="tag">${labels.type[ex.type]}</span>
+      <span class="tag">${levelNamesShort[p.difficulty]}</span>
+      <span class="tag">${ex.dose}</span>
+      ${ex.places.map(place => `<span class="tag">${labels.place[place]}</span>`).join("")}
+    </div>
+    <p class="modal-intro">${ex.desc}</p>
+    <div class="instruction-grid">
+      <div class="instruction-main">
+        <h3>Как выполнять</h3>
+        <ol class="steps-list">
+          ${guide.steps.map(step => `<li>${step}</li>`).join("")}
+        </ol>
+      </div>
+      <aside class="instruction-side">
+        <div class="instruction-note good">
+          <strong>Ориентир по технике</strong>
+          <p>${guide.tip}</p>
+        </div>
+        <div class="instruction-note warning">
+          <strong>Частая ошибка</strong>
+          <p>${guide.mistake}</p>
+        </div>
+      </aside>
+    </div>
+    <div class="modal-safety"><strong>Безопасность:</strong> движение не должно вызывать острую боль, выраженное головокружение или необычную одышку. При таких симптомах прекрати упражнение.</div>`;
+
+  modal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+  modal.querySelector(".modal-close").focus();
+}
+
+function closeExerciseModal() {
+  const modal = document.getElementById("exerciseModal");
+  if (!modal) return;
+  modal.classList.add("hidden");
+  document.body.classList.remove("modal-open");
 }
 
 document.getElementById("workoutForm").addEventListener("submit", (e) => {
   e.preventDefault();
   lastSelection = getSelection();
   variantSeed = 0;
-  renderWorkout(lastSelection, variantSeed);
+  lastWorkoutIds = new Set();
+  renderWorkout(lastSelection, variantSeed, lastWorkoutIds);
 });
 
 document.getElementById("shuffleButton").addEventListener("click", () => {
   if (!lastSelection) lastSelection = getSelection();
   variantSeed += 1;
-  renderWorkout(lastSelection, variantSeed);
+  const previousIds = new Set(lastWorkoutIds);
+  renderWorkout(lastSelection, variantSeed, previousIds);
 });
 
 document.getElementById("catalogPlace").addEventListener("change", renderCatalog);
 document.getElementById("catalogType").addEventListener("change", renderCatalog);
+
+document.addEventListener("click", e => {
+  const target = e.target.closest("[data-exercise-id]");
+  if (target) openExerciseModal(target.dataset.exerciseId);
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeExerciseModal();
+});
 
 renderCatalog();
