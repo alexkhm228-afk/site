@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0d1321" />
+  <meta name="description" content="Информационный справочник по гимнастике с подбором комплекса для дома, зала и уличной площадки." />
+  <title>Гимнастика — подбор комплекса</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Гимнастика — на главную">
+      <span class="brand-mark" aria-hidden="true">Г</span>
+      <span>Гимнастика</span>
+    </a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="#builder">Подобрать комплекс</a>
+      <a href="#catalog">Упражнения</a>
+      <a href="#safety">Безопасность</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero section-pad">
+      <div class="hero-copy">
+        <p class="eyebrow">Информационный справочник</p>
+        <h1>Гимнастика под твои условия</h1>
+        <p class="lead">Выбери место занятия, уровень, цель и время — сайт соберёт понятный комплекс упражнений для дома, зала или уличной площадки.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#builder">Подобрать комплекс</a>
+          <a class="button ghost" href="#catalog">Смотреть упражнения</a>
+        </div>
+        <div class="hero-stats" aria-label="Возможности сайта">
+          <div><strong>3</strong><span>места занятий</span></div>
+          <div><strong>6</strong><span>целей тренировок</span></div>
+          <div><strong>30+</strong><span>упражнений</span></div>
+        </div>
+      </div>
+      <div class="hero-card" aria-label="Пример тренировки">
+        <div class="mini-label">Пример</div>
+        <h2>Дом · новичок · 20 минут</h2>
+        <ol class="mini-workout">
+          <li><span>01</span>Разминка суставов</li>
+          <li><span>02</span>Приседания к стулу</li>
+          <li><span>03</span>Отжимания от опоры</li>
+          <li><span>04</span>Ягодичный мост</li>
+          <li><span>05</span>Планка с колен</li>
+        </ol>
+        <div class="mini-tip">Без оборудования · умеренная нагрузка</div>
+      </div>
+    </section>
+
+    <section class="section-pad section-muted" id="builder">
+      <div class="section-head">
+        <p class="eyebrow">Конструктор</p>
+        <h2>Подбери свой комплекс</h2>
+        <p>Заполни четыре параметра. Комплекс формируется из базы упражнений под выбранные условия.</p>
+      </div>
+
+      <form class="builder" id="workoutForm">
+        <fieldset>
+          <legend>1. Где будешь заниматься?</legend>
+          <div class="option-grid three">
+            <label class="choice-card">
+              <input type="radio" name="place" value="home" checked>
+              <span class="choice-icon">⌂</span>
+              <strong>Дома</strong>
+              <small>Без тренажёров или с минимумом инвентаря</small>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="place" value="gym">
+              <span class="choice-icon">▰</span>
+              <strong>В зале</strong>
+              <small>Коврик, скамья, лёгкие гантели и тренажёры</small>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="place" value="outdoor">
+              <span class="choice-icon">↟</span>
+              <strong>На площадке</strong>
+              <small>Турник, брусья, скамья или свободная площадка</small>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>2. Уровень подготовки</legend>
+          <div class="segmented">
+            <label><input type="radio" name="level" value="beginner" checked><span>Новичок</span></label>
+            <label><input type="radio" name="level" value="intermediate"><span>Средний</span></label>
+            <label><input type="radio" name="level" value="advanced"><span>Продвинутый</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>3. Главная цель</legend>
+          <div class="goal-grid">
+            <label><input type="radio" name="goal" value="mobility" checked><span>Мобильность</span></label>
+            <label><input type="radio" name="goal" value="strength"><span>Сила</span></label>
+            <label><input type="radio" name="goal" value="posture"><span>Осанка</span></label>
+            <label><input type="radio" name="goal" value="flexibility"><span>Гибкость</span></label>
+            <label><input type="radio" name="goal" value="endurance"><span>Выносливость</span></label>
+            <label><input type="radio" name="goal" value="fullbody"><span>Всё тело</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>4. Сколько времени?</legend>
+          <div class="segmented four">
+            <label><input type="radio" name="duration" value="10"><span>10 мин</span></label>
+            <label><input type="radio" name="duration" value="20" checked><span>20 мин</span></label>
+            <label><input type="radio" name="duration" value="30"><span>30 мин</span></label>
+            <label><input type="radio" name="duration" value="45"><span>45 мин</span></label>
+          </div>
+        </fieldset>
+
+        <button class="button primary large" type="submit">Собрать комплекс</button>
+      </form>
+
+      <section class="result hidden" id="result" aria-live="polite">
+        <div class="result-top">
+          <div>
+            <p class="eyebrow">Твой комплекс</p>
+            <h3 id="resultTitle">Комплекс</h3>
+            <p id="resultMeta"></p>
+          </div>
+          <button class="button ghost compact" type="button" id="shuffleButton">Другой вариант</button>
+        </div>
+        <div class="workout-list" id="workoutList"></div>
+        <div class="result-note">Ориентируйся на самочувствие и качество техники. При боли, головокружении или необычной одышке прекрати занятие.</div>
+      </section>
+    </section>
+
+    <section class="section-pad" id="catalog">
+      <div class="section-head split-head">
+        <div>
+          <p class="eyebrow">База упражнений</p>
+          <h2>Каталог</h2>
+          <p>Найди упражнение по месту занятия или части тренировки.</p>
+        </div>
+        <div class="catalog-controls">
+          <select id="catalogPlace" aria-label="Фильтр по месту">
+            <option value="all">Все места</option>
+            <option value="home">Дом</option>
+            <option value="gym">Зал</option>
+            <option value="outdoor">Площадка</option>
+          </select>
+          <select id="catalogType" aria-label="Фильтр по типу">
+            <option value="all">Все типы</option>
+            <option value="warmup">Разминка</option>
+            <option value="main">Основная часть</option>
+            <option value="cooldown">Заминка</option>
+          </select>
+        </div>
+      </div>
+      <div class="catalog-grid" id="catalogGrid"></div>
+    </section>
+
+    <section class="section-pad safety" id="safety">
+      <div class="section-head">
+        <p class="eyebrow">Важно</p>
+        <h2>Техника и безопасность</h2>
+      </div>
+      <div class="safety-grid">
+        <article><span>01</span><h3>Разогрейся</h3><p>Начинай с лёгкой суставной разминки и постепенно повышай интенсивность.</p></article>
+        <article><span>02</span><h3>Контролируй технику</h3><p>Двигайся в комфортной амплитуде. Качество движения важнее количества повторений.</p></article>
+        <article><span>03</span><h3>Не тренируйся через боль</h3><p>Острая или нарастающая боль — причина остановиться и оценить состояние.</p></article>
+        <article><span>04</span><h3>Учитывай ограничения</h3><p>При травмах, хронических заболеваниях, беременности или длительном перерыве нагрузку лучше согласовать со специалистом.</p></article>
+      </div>
+      <p class="disclaimer">Сайт носит информационный характер и не заменяет медицинскую диагностику, лечение или персональную работу с тренером/врачом.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <strong>Гимнастика</strong>
+      <p>Простой справочник и конструктор комплексов.</p>
+    </div>
+    <a href="#top">Наверх ↑</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
