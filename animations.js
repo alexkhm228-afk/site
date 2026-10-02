@@ -2,15 +2,15 @@
   'use strict';
 
   /*
-   * Exercise visuals now come from Workout Guide by Bryl Lim.
+   * Exercise visuals come from Workout Guide by Bryl Lim.
    * Visual assets: CC BY-SA 4.0.
    * Source: https://github.com/bryllim/workout-guide
    * We intentionally do NOT substitute a merely similar exercise when an
    * exact/equivalent visual is not available.
    */
 
-  const VERSION = '1.0.0';
-  const CDN = `https://cdn.jsdelivr.net/npm/@bryllim/workout-guide@${VERSION}/assets`;
+  const SOURCE_COMMIT = 'aac599224bb9780305239607ef98540b7e0ce389';
+  const ASSET_BASE = `https://raw.githubusercontent.com/bryllim/workout-guide/${SOURCE_COMMIT}/packages/workout-guide/assets`;
   const GALLERY = 'https://bryllim.github.io/workout-guide/exercises';
   const LICENSE = 'https://creativecommons.org/licenses/by-sa/4.0/';
   const PROJECT = 'https://github.com/bryllim/workout-guide';
@@ -29,8 +29,11 @@
     'plank': { slug: 'plank', label: 'Plank' },
     'wall-sit': { slug: 'wall-sit', label: 'Wall Sit' },
     'goblet-squat': { slug: 'goblet-squat', label: 'Goblet Squat' },
+    'db-row': { slug: 'one-arm-dumbbell-row', label: 'One-Arm Dumbbell Row' },
     'db-press': { slug: 'dumbbell-bench-press', label: 'Dumbbell Bench Press' },
+    'cable-row': { slug: 'seated-row', label: 'Seated Cable Row' },
     'bar-hang': { slug: 'dead-hang', label: 'Dead Hang' },
+    'scap-pull': { slug: 'scapular-pull-up', label: 'Scapular Pull-up' },
     'bench-dip': { slug: 'bench-dip', label: 'Bench Dip' },
     'mountain-climber': { slug: 'mountain-climber', label: 'Mountain Climber' },
     'high-knees': { slug: 'high-knees', label: 'High Knees' },
@@ -155,7 +158,7 @@
   document.head.appendChild(style);
 
   function frameUrl(slug, index) {
-    return `${CDN}/${slug}/frame-${index}.svg`;
+    return `${ASSET_BASE}/${slug}/frame-${index}.svg`;
   }
 
   function galleryUrl(slug) {
@@ -225,7 +228,6 @@
         const error = img.parentElement.querySelector('.wg-load-error');
         if (error) error.style.display = 'block';
 
-        // If the external source cannot be loaded at all, do not leave a broken visual block.
         if (failed === images.length) {
           block.replaceWith(createFallback());
         }
@@ -260,7 +262,6 @@
   document.addEventListener('click', event => {
     const trigger = event.target.closest('[data-exercise-id]');
     if (!trigger) return;
-    // app.js opens/populates the modal first; run immediately after that handler.
     queueMicrotask(() => injectVisual(trigger.dataset.exerciseId));
   });
 
