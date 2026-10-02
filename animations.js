@@ -1,155 +1,295 @@
 (() => {
-  const kindById = {
-    march:'march',joints:'mobility','arm-circles':'arms','cat-cow':'catcow','hip-openers':'hip','jumping-jacks':'jack','ninety-ninety':'mobility','ankle-roll':'calf',
-    'chair-squat':'squat','bench-squat':'squat','goblet-squat':'squat','leg-press':'legpress','step-up':'step','reverse-lunge':'lunge','wall-sit':'wallsit','calf-raise':'calf','single-leg-balance':'balance',
-    'wall-push':'wallpush','incline-push':'inclinepush','knee-push':'pushup',pushup:'pushup','bench-dip':'dip','db-press':'benchpress','overhead-press':'overhead',
-    'db-row':'row','cable-row':'seatedrow','lat-pulldown':'pulldown','bar-hang':'hang','scap-pull':'scappull','assisted-pull':'pullup','inverted-row':'invertedrow',
-    'glute-bridge':'bridge',rdl:'hinge','good-morning':'hinge','bird-dog':'birddog','dead-bug':'deadbug','knee-plank':'kneelplank',plank:'plank',pallof:'pallof','mountain-climber':'climber',
-    'shadow-box':'box','high-knees':'highknees','easy-run':'run',bike:'bike','chest-open':'chestopen','thoracic-rot':'rotation','world-stretch':'world','hamstring-fold':'hamfold','quad-stretch':'quad','child-pose':'child','pec-stretch':'pec',breathing:'breathing'
+  'use strict';
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const COLORS = {
+    ink: '#152238',
+    body: '#DDE8F7',
+    body2: '#BFD1EA',
+    joint: '#FFFFFF',
+    accent: '#2F6FED',
+    good: '#2E9B73',
+    bad: '#D14B4B',
+    muted: '#8291A7',
+    prop: '#A8B3C3',
+    grid: '#E7EDF5'
   };
 
-  const captions = {
-    squat:'Таз уходит назад и вниз; колени направлены по линии носков.',
-    lunge:'Опускайся вертикально; переднее колено остаётся над стопой.',
-    step:'Ставь всю стопу на опору и поднимайся без резкого толчка второй ногой.',
-    wallsit:'Спина прижата к стене, колени направлены по линии стоп.',
-    calf:'Поднимайся вертикально на носки и опускайся под контролем.',
-    balance:'Таз остаётся ровным, опорное колено мягкое.',
-    wallpush:'Корпус движется одной линией к стене и обратно.',
-    inclinepush:'Корпус остаётся прямой линией; опора должна быть устойчивой.',
-    pushup:'Не провисай в пояснице; грудь опускается между кистями.',
-    dip:'Плечи опущены, локти идут назад; не опускайся чрезмерно глубоко.',
-    benchpress:'Лопатки собраны, гантели движутся над грудью.',
-    overhead:'Рёбра собраны; не переразгибай поясницу при жиме вверх.',
-    row:'Локоть идёт назад к тазу, корпус не вращается.',
-    seatedrow:'Грудь раскрыта; рукоять идёт к нижним рёбрам.',
-    pulldown:'Локти движутся вниз; рукоять опускается к верхней части груди.',
-    hang:'Руки прямые, плечи под контролем, шея длинная.',
-    scappull:'Движение небольшое и выполняется без сгибания локтей.',
-    pullup:'Грудь тянется к перекладине, локти идут вниз и назад.',
-    invertedrow:'Корпус остаётся прямым; тяни грудь к перекладине.',
-    bridge:'Таз поднимается ягодицами, а не за счёт прогиба поясницы.',
-    hinge:'Таз уходит назад, спина сохраняет длину и нейтральное положение.',
-    birddog:'Таз не разворачивается; рука и противоположная нога вытягиваются в линию.',
-    deadbug:'Поясница стабильна; конечности опускаются только до сохранения контроля.',
-    plank:'Макушка тянется вперёд, пятки назад; таз не провисает.',
-    kneelplank:'Прямая линия от головы до колен; локти находятся под плечами.',
-    pallof:'Руки уходят вперёд, а корпус сопротивляется вращению.',
-    climber:'Сохраняй форму планки, пока колени поочерёдно идут к груди.',
-    march:'Шагай мягко, сохраняя вертикальный корпус и естественную работу рук.',
-    highknees:'Корпус высокий, приземление мягкое и короткое.',
-    run:'Стопа приземляется близко под центром тела; не делай чрезмерно длинный шаг.',
-    jack:'Руки и ноги разводятся синхронно; приземление мягкое.',
-    box:'Удар сопровождается небольшим разворотом корпуса; локоть не выщёлкивай.',
-    bike:'Колени движутся по линии стоп, корпус остаётся устойчивым.',
-    mobility:'Двигай суставами мягко и без рывков, постепенно увеличивая амплитуду.',
-    arms:'Плечи не поднимай к ушам; движение начинается в плечевых суставах.',
-    catcow:'Чередуй округление и раскрытие всей спины без резкого прогиба поясницы.',
-    hip:'Корпус остаётся ровным; движение происходит в тазобедренном суставе.',
-    chestopen:'Раскрывай грудной отдел, не компенсируя сильным прогибом поясницы.',
-    rotation:'Таз остаётся стабильным; вращается грудная клетка.',
-    world:'Переднее колено стабильно; поворот выполняется из грудного отдела.',
-    hamfold:'Наклон начинается от таза; не округляй спину ради глубины.',
-    quad:'Колени рядом, таз слегка подкручен; не прогибай поясницу.',
-    child:'Таз тянется к пяткам, спина мягко удлиняется.',
-    pec:'Плечо опущено; поворачивай корпус мягко и без боли.',
-    breathing:'Плечи расслаблены; выдох можно сделать немного длиннее вдоха.',
-    legpress:'Поясница прижата к спинке; колени не блокируются в верхней точке.'
-  };
+  const style = document.createElement('style');
+  style.textContent = `
+    .tech-visual-v2{margin:24px 0 28px;padding:20px;border:1px solid #dfe6ef;border-radius:22px;background:linear-gradient(180deg,#f9fbfe,#f3f7fc)}
+    .tech-visual-v2__head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}
+    .tech-visual-v2__head h3{margin:0 0 6px;font-size:18px;color:#152238}
+    .tech-visual-v2__head p{margin:0;color:#68778d;font-size:13px;line-height:1.55;max-width:680px}
+    .tech-visual-v2__badge{flex:0 0 auto;padding:7px 10px;border-radius:999px;background:#e7efff;color:#2f6fed;font-size:11px;font-weight:800;letter-spacing:.02em}
+    .tech-visual-v2__frames{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .tech-frame{position:relative;overflow:hidden;border:1px solid #dde5ef;border-radius:18px;background:#fff}
+    .tech-frame--bad{border-color:#efc7c7;background:#fffafa}
+    .tech-frame__label{display:flex;align-items:center;gap:8px;padding:10px 12px 0;font-size:12px;font-weight:800;color:#34445a}
+    .tech-frame__dot{width:8px;height:8px;border-radius:50%;background:#2e9b73}
+    .tech-frame--bad .tech-frame__dot{background:#d14b4b}
+    .tech-frame svg{display:block;width:100%;aspect-ratio:6/5}
+    .tech-frame__cue{min-height:56px;padding:0 12px 12px;color:#66758a;font-size:11.5px;line-height:1.45}
+    .tech-visual-v2__legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;color:#66758a;font-size:11px}
+    .tech-legend-item{display:inline-flex;align-items:center;gap:6px}
+    .tech-legend-line{width:24px;height:0;border-top:3px solid #2f6fed;border-radius:2px}
+    .tech-legend-line--bad{border-color:#d14b4b;border-top-style:dashed}
+    @media(max-width:760px){.tech-visual-v2{padding:14px}.tech-visual-v2__head{display:block}.tech-visual-v2__badge{display:inline-block;margin-top:8px}.tech-visual-v2__frames{grid-template-columns:1fr}.tech-frame svg{aspect-ratio:16/10}}
+  `;
+  document.head.appendChild(style);
 
-  const phases = {
-    squat:['Старт','Низ'],lunge:['Старт','Низ'],step:['Старт','Наверх'],wallsit:['Удержание','Удержание'],calf:['Низ','Верх'],balance:['Баланс','Баланс'],
-    wallpush:['Старт','К стене'],inclinepush:['Старт','Низ'],pushup:['Верх','Низ'],dip:['Верх','Низ'],benchpress:['Низ','Верх'],overhead:['У плеч','Вверх'],
-    row:['Старт','Тяга'],seatedrow:['Старт','Тяга'],pulldown:['Верх','К груди'],hang:['Вис','Вис'],scappull:['Вис','Лопатки вниз'],pullup:['Низ','Вверх'],invertedrow:['Низ','К перекладине'],
-    bridge:['Низ','Верх'],hinge:['Старт','Наклон'],birddog:['Старт','Диагональ'],deadbug:['Старт','Диагональ'],plank:['Удержание','Удержание'],kneelplank:['Удержание','Удержание'],
-    pallof:['У груди','Выжим'],climber:['Нога 1','Нога 2'],march:['Правая','Левая'],highknees:['Правая','Левая'],run:['Фаза 1','Фаза 2'],jack:['Старт','Развод'],box:['Стойка','Удар'],bike:['Педаль 1','Педаль 2'],
-    mobility:['Плавно','Плавно'],arms:['В стороны','Круг'],catcow:['Округление','Раскрытие'],hip:['Колено вверх','Отведение'],chestopen:['Нейтрально','Раскрытие'],rotation:['Центр','Поворот'],world:['Выпад','Поворот'],hamfold:['Старт','Наклон'],quad:['Растяжка','Растяжка'],child:['Поза','Поза'],pec:['Старт','Растяжка'],breathing:['Вдох','Выдох'],legpress:['Согнуто','Жим']
-  };
-
-  function line(x1,y1,x2,y2,c='body'){ return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="ga-${c}"/>`; }
-  function head(x,y){ return `<circle cx="${x}" cy="${y}" r="11" class="ga-head"/>`; }
-  function arrow(x1,y1,x2,y2){ return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="ga-arrow"/><polygon points="${x2},${y2} ${x2-7},${y2-4} ${x2-7},${y2+4}" class="ga-arrowhead"/>`; }
-  function figure(p, extra=''){
-    return `${head(p.h[0],p.h[1])}${line(...p.n,...p.h)}${line(...p.n,...p.c)}${line(...p.c,...p.s1)}${line(...p.c,...p.s2)}${line(...p.s1,...p.e1)}${line(...p.e1,...p.w1)}${line(...p.s2,...p.e2)}${line(...p.e2,...p.w2)}${line(...p.c,...p.p)}${line(...p.p,...p.k1)}${line(...p.k1,...p.a1)}${line(...p.p,...p.k2)}${line(...p.k2,...p.a2)}${extra}`;
-  }
-  function P(h=[100,32],n=[100,46],c=[100,66],p=[100,104],s1=[88,66],s2=[112,66],e1=[86,88],e2=[114,88],w1=[86,112],w2=[114,112],k1=[92,144],k2=[108,144],a1=[92,178],a2=[108,178]){ return {h,n,c,p,s1,s2,e1,e2,w1,w2,k1,k2,a1,a2}; }
-  const stand=()=>P();
-
-  function scene(kind, phase){
-    let p=stand(), extra='';
-    if(kind==='squat' && phase){p=P([100,48],[100,61],[100,80],[100,116],[88,80],[112,80],[82,100],[118,100],[78,120],[122,120],[82,146],[118,146],[76,178],[124,178]);extra=`<rect x="132" y="118" width="34" height="7" rx="3" class="ga-prop"/>${arrow(100,96,100,128)}`;}
-    else if(kind==='squat'){extra='<rect x="132" y="118" width="34" height="7" rx="3" class="ga-prop"/>';}
-    else if(kind==='lunge'){p=P([100,36],[100,50],[100,70],[100,106],[88,70],[112,70],[86,94],[114,94],[86,116],[114,116],phase?[88,146]:[92,136],phase?[132,146]:[128,138],[86,178],[154,178]);if(phase)extra=arrow(100,96,100,128);}
-    else if(kind==='step'){extra='<rect x="125" y="135" width="50" height="10" rx="4" class="ga-prop"/>';if(phase)p=P([102,22],[102,36],[102,55],[102,88],[90,55],[114,55],[88,78],[116,78],[88,100],[116,100],[120,115],[106,130],[142,135],[104,165]);else p=P(undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,undefined,[112,136],[108,144],[136,135],[108,178]);}
-    else if(kind==='wallsit'){p=P([68,42],[68,56],[68,76],[68,112],[56,76],[80,76],[54,98],[82,98],[54,120],[82,120],[108,112],[108,122],[108,178],[108,178]);extra='<line x1="42" y1="20" x2="42" y2="184" class="ga-prop"/>';}
-    else if(kind==='calf'){if(phase){p.a1=[92,170];p.a2=[108,170];extra=arrow(100,176,100,150);}}
-    else if(kind==='balance'){p.k2=[128,132];p.a2=[140,158];extra='<circle cx="100" cy="104" r="12" class="ga-core"/>';}
-    else if(kind==='wallpush'){p=P([124,52],[112,62],[98,74],[76,96],[94,72],[102,78],phase?[126,72]:[114,80],phase?[138,78]:[124,88],[158,68],[158,82],[58,126],[66,132],[38,170],[46,176]);extra='<line x1="170" y1="22" x2="170" y2="184" class="ga-prop"/>';}
-    else if(kind==='inclinepush'){p=P([60,62],[74,68],[92,76],[120,92],[88,76],[98,80],phase?[118,86]:[106,84],phase?[128,92]:[116,90],[145,88],[145,100],[145,122],[154,128],[176,154],[184,158]);extra='<rect x="144" y="78" width="38" height="55" rx="5" class="ga-prop"/>';}
-    else if(kind==='pushup'||kind==='plank'||kind==='kneelplank'||kind==='climber'){p=P([50,92],[64,92],[82,94],[120,98],[80,94],[90,96],[68,101],[98,101],[54,108],[108,108],kind==='kneelplank'?[150,112]:(kind==='climber'&&phase?[148,118]:[154,108]),kind==='kneelplank'?[158,118]:(kind==='climber'&&!phase?[148,118]:[162,112]),kind==='kneelplank'?[164,130]:[190,120],kind==='kneelplank'?[172,132]:[198,122]);if(kind==='pushup'&&phase){p.c=[86,106];p.p=[122,108];p.e1=[76,112];p.e2=[104,112];} if(kind==='plank'||kind==='kneelplank')extra='<circle cx="116" cy="99" r="14" class="ga-core"/>';}
-    else if(kind==='dip'){p=P([100,40],[100,54],[100,74],[100,108],[88,74],[112,74],phase?[80,98]:[86,92],phase?[120,98]:[114,92],[68,112],[132,112],[132,118],[144,122],[166,126],[178,130]);extra='<rect x="50" y="111" width="28" height="8" rx="3" class="ga-prop"/>';}
-    else if(kind==='benchpress'){p=P([52,122],[66,122],[86,122],[116,122],[84,114],[84,130],phase?[106,102]:[106,112],phase?[106,142]:[106,132],phase?[130,92]:[130,108],phase?[130,152]:[130,136],[148,112],[148,132],[176,108],[176,136]);extra='<rect x="72" y="130" width="86" height="9" rx="4" class="ga-prop"/>';}
-    else if(kind==='overhead'){if(phase){p.e1=[86,52];p.e2=[114,52];p.w1=[86,28];p.w2=[114,28];}else{p.e1=[84,72];p.e2=[116,72];p.w1=[86,56];p.w2=[114,56];}}
-    else if(kind==='row'){p=P([78,52],[90,60],[108,70],[132,88],[104,70],[114,74],phase?[124,72]:[122,88],[116,90],phase?[138,66]:[134,106],[126,104],[148,128],[160,132],[166,174],[180,178]);extra='<rect x="130" y="88" width="26" height="7" rx="3" class="ga-prop"/>';}
-    else if(kind==='seatedrow'){p=P([70,66],[70,80],[82,92],[104,116],[78,92],[88,96],phase?[102,88]:[90,102],phase?[108,98]:[96,108],phase?[118,90]:[138,100],phase?[118,100]:[138,112],[140,122],[140,132],[170,126],[170,140]);extra='<line x1="164" y1="40" x2="164" y2="172" class="ga-prop"/>';}
-    else if(kind==='pulldown'){p=P();extra='<line x1="55" y1="24" x2="145" y2="24" class="ga-prop"/>';if(phase){p.e1=[86,96];p.e2=[114,96];p.w1=[86,78];p.w2=[114,78];}else{p.e1=[78,58];p.e2=[122,58];p.w1=[70,34];p.w2=[130,34];}}
-    else if(kind==='hang'||kind==='scappull'||kind==='pullup'){p=P([100,68],[100,82],[100,100],[100,130],[88,100],[112,100],[88,78],[112,78],[88,48],[112,48],[92,158],[108,158],[92,188],[108,188]);extra='<line x1="45" y1="40" x2="155" y2="40" class="ga-prop"/>';if((kind==='scappull'&&phase)||kind==='pullup'&&phase){p.h=[100,54];p.n=[100,68];p.c=[100,86];p.p=[100,116];p.k1=[92,148];p.k2=[108,148];p.a1=[92,180];p.a2=[108,180];}}
-    else if(kind==='invertedrow'){p=P([54,122],[68,122],[90,122],[128,122],[88,116],[88,128],[82,110],[82,134],[78,102],[78,142],[158,116],[158,130],[190,114],[190,132]);extra='<line x1="76" y1="96" x2="145" y2="96" class="ga-prop"/>';if(phase){p.h=[72,110];p.n=[86,110];p.c=[104,110];}}
-    else if(kind==='bridge'){p=P([48,140],[62,140],[82,140],phase?[120,104]:[120,140],[80,132],[80,148],[68,140],[68,152],[56,148],[56,156],[148,126],[148,138],[178,138],[178,146]);if(phase)extra=arrow(120,136,120,106);}
-    else if(kind==='hinge'){if(phase)p=P([82,52],[94,60],[112,70],[138,88],[108,70],[118,74],[116,94],[126,98],[126,118],[136,122],[148,130],[162,134],[150,176],[172,178]);}
-    else if(kind==='birddog'){p=P([56,80],[70,82],[92,86],[132,92],[90,86],[100,90],[72,86],phase?[100,90]:[114,94],[52,86],phase?[126,94]:[136,98],[132,110],phase?[158,92]:[158,110],[132,132],phase?[190,88]:[158,132]);if(phase){p.e1=[52,86];p.w1=[30,86];extra=arrow(150,92,190,92);}}
-    else if(kind==='deadbug'){p=P([48,110],[62,110],[84,110],[116,110],[82,102],[82,118],[66,86],phase?[98,138]:[66,134],[50,68],phase?[116,156]:[50,152],phase?[150,88]:[144,86],phase?[150,142]:[144,138],phase?[180,68]:[170,64],phase?[180,160]:[170,158]);}
-    else if(kind==='pallof'){extra='<line x1="36" y1="42" x2="36" y2="178" class="ga-prop"/>';p.w1=phase?[132,88]:[108,88];p.w2=phase?[132,98]:[108,98];p.e1=phase?[118,86]:[96,86];p.e2=phase?[118,100]:[96,100];}
-    else if(kind==='march'||kind==='highknees'||kind==='run'){p.k1=phase?[130,134]:[92,146];p.a1=phase?[146,166]:[84,178];p.k2=phase?[92,146]:[130,134];p.a2=phase?[84,178]:[146,166];p.e1=phase?[116,92]:[84,92];p.w1=phase?[130,112]:[72,112];p.e2=phase?[84,92]:[116,92];p.w2=phase?[72,112]:[130,112];if(kind==='highknees'){p.k1=phase?[140,118]:[90,146];p.k2=phase?[90,146]:[140,118];}}
-    else if(kind==='jack'&&phase){p.e1=[72,52];p.e2=[128,52];p.w1=[58,30];p.w2=[142,30];p.k1=[76,148];p.k2=[124,148];p.a1=[58,178];p.a2=[142,178];}
-    else if(kind==='box'){p.e1=[84,82];p.w1=[92,62];if(phase){p.e2=[124,74];p.w2=[156,74];extra=arrow(122,74,158,74);}else{p.e2=[116,82];p.w2=[108,62];}}
-    else if(kind==='bike'){p=P([70,62],[82,68],[100,76],[120,96],[96,76],[106,80],[122,86],[134,88],[148,86],[158,90],phase?[146,118]:[146,142],phase?[146,142]:[146,118],phase?[172,134]:[164,160],phase?[164,160]:[172,134]);extra='<circle cx="132" cy="150" r="17" class="ga-prop"/><circle cx="176" cy="150" r="17" class="ga-prop"/><line x1="132" y1="150" x2="154" y2="116" class="ga-prop"/><line x1="154" y1="116" x2="176" y2="150" class="ga-prop"/>';}
-    else if(kind==='arms'){if(phase){p.e1=[72,66];p.w1=[52,66];p.e2=[128,66];p.w2=[148,66];extra='<circle cx="60" cy="66" r="14" class="ga-motion"/><circle cx="140" cy="66" r="14" class="ga-motion"/>';}}
-    else if(kind==='catcow'){p=P([54,90],[70,92],[92,94],phase?[136,88]:[136,108],[90,94],[100,98],[72,94],[116,100],[50,94],[136,106],[136,122],[164,122],[136,142],[164,142]);extra=phase?'<path d="M86 100 Q112 76 140 92" class="ga-spine"/>':'<path d="M86 92 Q112 118 140 108" class="ga-spine"/>';}
-    else if(kind==='hip'){if(phase){p.k1=[76,128];p.a1=[68,158];}else{p.k1=[94,126];p.a1=[94,156];}}
-    else if(kind==='chestopen'&&phase){p.e1=[70,68];p.w1=[52,62];p.e2=[130,68];p.w2=[148,62];extra=arrow(100,76,142,64);}
-    else if(kind==='rotation'&&phase){p.s1=[92,66];p.s2=[126,58];p.e2=[146,58];p.w2=[160,58];extra=arrow(112,68,154,58);}
-    else if(kind==='world'){p=lunge(true);if(phase){p.e2=[136,64];p.w2=[154,42];extra=arrow(126,74,156,46);}}
-    else if(kind==='hamfold'&&phase){p=P([82,56],[94,64],[112,72],[136,90],[108,72],[118,76],[118,98],[128,102],[128,122],[138,126],[146,134],[164,138],[146,178],[166,178]);}
-    else if(kind==='quad'){p.k2=[132,140];p.a2=[116,132];p.w2=[116,132];}
-    else if(kind==='child'){p=P([70,126],[84,126],[104,126],[136,130],[102,120],[110,126],[80,122],[68,122],[54,122],[42,122],[140,146],[150,150],[122,158],[132,160]);}
-    else if(kind==='pec'){extra='<line x1="164" y1="28" x2="164" y2="182" class="ga-prop"/>';if(phase){p.e2=[140,72];p.w2=[162,74];p.c=[94,68];p.p=[92,104];}}
-    else if(kind==='breathing'){extra=phase?'<ellipse cx="100" cy="82" rx="24" ry="18" class="ga-breath"/>':'<ellipse cx="100" cy="82" rx="18" ry="13" class="ga-breath"/>';}
-    else if(kind==='legpress'){p=P([48,120],[62,120],[82,120],[110,118],[80,112],[80,128],[66,116],[66,132],[54,122],[54,138],phase?[144,112]:[138,102],phase?[144,132]:[138,142],phase?[184,110]:[166,88],phase?[184,136]:[166,156]);extra='<polyline points="190,72 205,72 205,166 190,166" class="ga-prop"/>';}
-    else if(kind==='mobility'){extra='<circle cx="86" cy="70" r="13" class="ga-motion"/><circle cx="114" cy="70" r="13" class="ga-motion"/>';}
-    return `<svg viewBox="0 0 200 200" aria-hidden="true"><line x1="24" y1="182" x2="176" y2="182" class="ga-ground"/>${figure(p,extra)}</svg>`;
+  function pose(p) {
+    return {
+      head: [150, 38],
+      shoulderL: [137, 66], shoulderR: [163, 66],
+      elbowL: [132, 98], elbowR: [168, 98],
+      wristL: [130, 130], wristR: [170, 130],
+      hipL: [140, 118], hipR: [160, 118],
+      kneeL: [138, 168], kneeR: [162, 168],
+      ankleL: [136, 218], ankleR: [164, 218],
+      ...p
+    };
   }
 
-  function injectStyle(){
-    if(document.getElementById('gymAnimStyle')) return;
-    const s=document.createElement('style');s.id='gymAnimStyle';s.textContent=`
-      .ga-wrap{margin:22px 0 4px;padding:18px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#fbfdff,#f1f6ff)}
-      .ga-headrow{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.ga-title{font-weight:800}.ga-badge{font-size:11px;font-weight:800;padding:6px 9px;border-radius:999px;background:#e7efff;color:#2451a8}
-      .ga-stage{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ga-frame{position:relative;min-height:210px;border:1px solid #dfe6f2;border-radius:16px;background:#fff;padding:8px}.ga-frame.active{box-shadow:0 0 0 2px rgba(52,99,230,.15) inset}.ga-phase{position:absolute;left:12px;top:10px;z-index:2;font-size:11px;font-weight:800;color:#52627a;background:#f3f6fb;padding:5px 8px;border-radius:999px}.ga-frame svg{width:100%;height:210px;display:block}.ga-body{stroke:#152033;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.ga-head{fill:#fff;stroke:#152033;stroke-width:4}.ga-prop{fill:none;stroke:#9aa9bc;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}.ga-ground{stroke:#d8e0ea;stroke-width:3}.ga-core{fill:rgba(52,99,230,.12);stroke:#3463e6;stroke-width:2}.ga-arrow{stroke:#3463e6;stroke-width:3;stroke-dasharray:7 6}.ga-arrowhead{fill:#3463e6}.ga-motion{fill:none;stroke:#14a38b;stroke-width:3;stroke-dasharray:6 5}.ga-spine{fill:none;stroke:#14a38b;stroke-width:4;stroke-linecap:round}.ga-breath{fill:rgba(20,163,139,.12);stroke:#14a38b;stroke-width:2}.ga-caption{margin:12px 2px 0;color:var(--muted);font-size:13px;line-height:1.55}.ga-note{margin-top:10px;font-size:11px;color:var(--muted)}
-      @media(max-width:640px){.ga-stage{grid-template-columns:1fr}.ga-frame{min-height:190px}.ga-frame svg{height:190px}.ga-badge{display:none}}
-    `;document.head.appendChild(s);
-  }
+  function frame(label, cue, p, extras = {}) { return { label, cue, pose: p, ...extras }; }
 
-  function addAnimation(){
-    const content=document.getElementById('exerciseModalContent');
-    if(!content || content.querySelector('.ga-wrap')) return;
-    const title=content.querySelector('h2')?.textContent||'';
-    const trigger=document.querySelector('.exercise-modal:not(.hidden) [data-current-exercise]');
-    let id=window.__lastExerciseId;
-    if(!id){
-      const ex=(window.exercises||[]).find(x=>x.name===title); id=ex?.id;
+  const guides = {
+    'chair-squat': {
+      note: 'Вид сбоку: важны нейтральная спина, движение таза назад и колени по линии стоп.',
+      frames: [
+        frame('1 · Старт', 'Стопы устойчивы. Стул позади, корпус собран.', pose({
+          head:[128,38], shoulderL:[123,66], shoulderR:[136,68], elbowL:[116,96], elbowR:[140,98], wristL:[112,126], wristR:[144,128], hipL:[126,118], hipR:[138,120], kneeL:[128,168], kneeR:[140,170], ankleL:[126,218], ankleR:[144,218]
+        }), {prop:'chair'}),
+        frame('2 · Нижняя фаза', 'Таз назад к стулу. Пятки не отрываются, колено не заваливается внутрь.', pose({
+          head:[112,52], shoulderL:[112,78], shoulderR:[126,80], elbowL:[130,98], elbowR:[142,102], wristL:[150,114], wristR:[158,118], hipL:[134,120], hipR:[146,122], kneeL:[118,165], kneeR:[134,168], ankleL:[106,218], ankleR:[142,218]
+        }), {prop:'chair', arrow:{from:[140,103],to:[155,136]}}),
+        frame('Не делай', 'Не округляй поясницу и не уводи колени резко вперёд.', pose({
+          head:[112,64], shoulderL:[115,88], shoulderR:[128,92], elbowL:[134,108], elbowR:[146,112], wristL:[154,122], wristR:[164,126], hipL:[142,120], hipR:[152,122], kneeL:[158,160], kneeR:[170,162], ankleL:[128,218], ankleR:[150,218]
+        }), {prop:'chair', bad:true, warningLine:[[105,72],[150,126]]})
+      ]
+    },
+    'wall-push': {
+      note: 'Вид сбоку: тело остаётся одной линией от головы до пяток, локти сгибаются под контролем.',
+      frames: [
+        frame('1 · Старт', 'Ладони на стене чуть шире плеч. Корпус прямой.', pose({
+          head:[102,58], shoulderL:[112,78], shoulderR:[121,82], elbowL:[140,84], elbowR:[145,94], wristL:[176,84], wristR:[176,98], hipL:[92,112], hipR:[102,116], kneeL:[72,157], kneeR:[82,160], ankleL:[54,208], ankleR:[64,212]
+        }), {prop:'wall-right'}),
+        frame('2 · К стене', 'Согни локти и веди грудь к стене, не ломая линию корпуса.', pose({
+          head:[126,58], shoulderL:[134,78], shoulderR:[144,82], elbowL:[154,88], elbowR:[160,100], wristL:[176,84], wristR:[176,98], hipL:[104,112], hipR:[114,116], kneeL:[82,157], kneeR:[92,160], ankleL:[62,208], ankleR:[72,212]
+        }), {prop:'wall-right', arrow:{from:[112,90],to:[142,90]}}),
+        frame('Не делай', 'Не провисай поясницей и не поднимай плечи к ушам.', pose({
+          head:[126,70], shoulderL:[138,88], shoulderR:[148,92], elbowL:[156,96], elbowR:[162,106], wristL:[176,84], wristR:[176,98], hipL:[106,126], hipR:[116,130], kneeL:[82,160], kneeR:[92,164], ankleL:[62,208], ankleR:[72,212]
+        }), {prop:'wall-right', bad:true, warningLine:[[126,72],[108,132]]})
+      ]
+    },
+    'incline-push': {
+      note: 'Вид сбоку: опора должна быть устойчивой; голова, таз и пятки держатся на одной линии.',
+      frames: [
+        frame('1 · Старт', 'Руки прямые, корпус собран, таз не провисает.', pose({
+          head:[70,78], shoulderL:[86,92], shoulderR:[96,95], elbowL:[116,98], elbowR:[122,104], wristL:[152,102], wristR:[154,112], hipL:[128,116], hipR:[138,120], kneeL:[164,154], kneeR:[172,158], ankleL:[198,188], ankleR:[204,194]
+        }), {prop:'box-right'}),
+        frame('2 · Опускание', 'Грудь движется к опоре, локти назад под умеренным углом.', pose({
+          head:[96,88], shoulderL:[108,98], shoulderR:[118,102], elbowL:[128,106], elbowR:[136,116], wristL:[152,102], wristR:[154,112], hipL:[140,122], hipR:[150,126], kneeL:[172,158], kneeR:[180,162], ankleL:[202,190], ankleR:[208,196]
+        }), {prop:'box-right', arrow:{from:[100,95],to:[132,108]}}),
+        frame('Не делай', 'Не опускай таз ниже линии плеч и пяток.', pose({
+          head:[90,78], shoulderL:[106,92], shoulderR:[116,96], elbowL:[128,100], elbowR:[136,110], wristL:[152,102], wristR:[154,112], hipL:[140,140], hipR:[150,144], kneeL:[174,164], kneeR:[182,168], ankleL:[202,190], ankleR:[208,196]
+        }), {prop:'box-right', bad:true, warningLine:[[88,86],[150,144]]})
+      ]
+    },
+    'glute-bridge': {
+      note: 'Вид сбоку: подъём идёт за счёт ягодиц; верхняя точка — прямая линия плечо–таз–колено.',
+      frames: [
+        frame('1 · Старт', 'Стопы под коленями, поясница нейтральна.', pose({
+          head:[52,154], shoulderL:[72,150], shoulderR:[82,154], elbowL:[62,170], elbowR:[72,174], wristL:[48,180], wristR:[58,184], hipL:[120,154], hipR:[130,158], kneeL:[158,132], kneeR:[166,140], ankleL:[196,160], ankleR:[202,168]
+        })),
+        frame('2 · Верх', 'Сожми ягодицы. Не переразгибай поясницу.', pose({
+          head:[52,154], shoulderL:[72,150], shoulderR:[82,154], elbowL:[62,170], elbowR:[72,174], wristL:[48,180], wristR:[58,184], hipL:[122,116], hipR:[132,120], kneeL:[158,132], kneeR:[166,140], ankleL:[196,160], ankleR:[202,168]
+        }), {arrow:{from:[126,150],to:[126,118]}}),
+        frame('Не делай', 'Не «ломай» поясницу, выталкивая рёбра вверх.', pose({
+          head:[52,154], shoulderL:[72,150], shoulderR:[82,154], elbowL:[62,170], elbowR:[72,174], wristL:[48,180], wristR:[58,184], hipL:[122,102], hipR:[132,106], kneeL:[158,132], kneeR:[166,140], ankleL:[196,160], ankleR:[202,168]
+        }), {bad:true, warningLine:[[78,150],[126,104]]})
+      ]
+    },
+    'knee-plank': {
+      note: 'Вид сбоку: от головы до колен — одна линия, локти под плечами.',
+      frames: [
+        frame('Правильно', 'Живот и ягодицы слегка напряжены, шея продолжает линию спины.', pose({
+          head:[58,105], shoulderL:[78,108], shoulderR:[88,110], elbowL:[72,134], elbowR:[82,136], wristL:[58,142], wristR:[68,144], hipL:[126,116], hipR:[136,120], kneeL:[170,138], kneeR:[178,142], ankleL:[190,154], ankleR:[198,158]
+        }), {guideLine:[[56,104],[176,140]]}),
+        frame('Контроль', 'Отталкивай пол локтями и не проваливайся между плечами.', pose({
+          head:[58,105], shoulderL:[78,108], shoulderR:[88,110], elbowL:[72,134], elbowR:[82,136], wristL:[58,142], wristR:[68,144], hipL:[126,116], hipR:[136,120], kneeL:[170,138], kneeR:[178,142], ankleL:[190,154], ankleR:[198,158]
+        }), {arrow:{from:[78,126],to:[78,108]}}),
+        frame('Не делай', 'Не провисай в пояснице и не задирай подбородок.', pose({
+          head:[64,92], shoulderL:[80,108], shoulderR:[90,110], elbowL:[72,134], elbowR:[82,136], wristL:[58,142], wristR:[68,144], hipL:[126,134], hipR:[136,138], kneeL:[170,138], kneeR:[178,142], ankleL:[190,154], ankleR:[198,158]
+        }), {bad:true, warningLine:[[64,96],[134,138]]})
+      ]
+    },
+    'plank': {
+      note: 'Вид сбоку: голова, грудная клетка, таз и пятки образуют одну линию.',
+      frames: [
+        frame('Правильно', 'Локти под плечами. Таз не выше и не ниже линии корпуса.', pose({
+          head:[50,104], shoulderL:[72,108], shoulderR:[82,110], elbowL:[68,132], elbowR:[78,134], wristL:[54,142], wristR:[64,144], hipL:[124,116], hipR:[134,120], kneeL:[164,126], kneeR:[174,130], ankleL:[204,136], ankleR:[214,140]
+        }), {guideLine:[[48,104],[208,138]]}),
+        frame('Контроль', 'Слегка подтяни рёбра к тазу и напряги ягодицы.', pose({
+          head:[50,104], shoulderL:[72,108], shoulderR:[82,110], elbowL:[68,132], elbowR:[78,134], wristL:[54,142], wristR:[64,144], hipL:[124,116], hipR:[134,120], kneeL:[164,126], kneeR:[174,130], ankleL:[204,136], ankleR:[214,140]
+        }), {arrow:{from:[128,136],to:[128,116]}}),
+        frame('Не делай', 'Не проваливай таз и не выгибай поясницу.', pose({
+          head:[50,104], shoulderL:[72,108], shoulderR:[82,110], elbowL:[68,132], elbowR:[78,134], wristL:[54,142], wristR:[64,144], hipL:[124,140], hipR:[134,144], kneeL:[164,132], kneeR:[174,136], ankleL:[204,136], ankleR:[214,140]
+        }), {bad:true, warningLine:[[72,108],[134,144]]})
+      ]
+    },
+    'reverse-lunge': {
+      note: 'Вид сбоку: шаг назад достаточно длинный; передняя стопа полностью на полу.',
+      frames: [
+        frame('1 · Старт', 'Стой ровно, стопы примерно на ширине таза.', pose({head:[130,38], shoulderL:[124,66], shoulderR:[138,68], hipL:[128,118], hipR:[140,120], kneeL:[128,168], kneeR:[142,170], ankleL:[126,218], ankleR:[146,218]})),
+        frame('2 · Нижняя фаза', 'Опускайся вниз. Переднее колено остаётся над стопой.', pose({head:[124,52], shoulderL:[120,80], shoulderR:[134,82], hipL:[126,122], hipR:[140,124], kneeL:[114,166], kneeR:[160,174], ankleL:[106,218], ankleR:[190,218]}), {arrow:{from:[132,100],to:[132,140]}}),
+        frame('Не делай', 'Не заваливайся вперёд и не позволяй переднему колену уходить внутрь.', pose({head:[108,68], shoulderL:[110,92], shoulderR:[124,94], hipL:[130,124], hipR:[142,126], kneeL:[126,164], kneeR:[160,174], ankleL:[106,218], ankleR:[190,218]}), {bad:true, warningLine:[[110,70],[132,128]]})
+      ]
+    },
+    'bird-dog': {
+      note: 'Вид сбоку: противоположные рука и нога вытягиваются, а таз остаётся ровным.',
+      frames: [
+        frame('1 · Старт', 'Ладони под плечами, колени под тазом.', pose({head:[70,104], shoulderL:[90,108], shoulderR:[100,110], elbowL:[82,136], elbowR:[112,136], wristL:[70,160], wristR:[120,160], hipL:[138,112], hipR:[148,116], kneeL:[136,156], kneeR:[166,156], ankleL:[136,180], ankleR:[166,180]})),
+        frame('2 · Вытяжение', 'Рука вперёд, противоположная нога назад. Таз не разворачивается.', pose({head:[70,104], shoulderL:[90,108], shoulderR:[100,110], elbowL:[68,106], elbowR:[112,136], wristL:[42,104], wristR:[120,160], hipL:[138,112], hipR:[148,116], kneeL:[136,156], kneeR:[170,116], ankleL:[136,180], ankleR:[208,112]}), {arrow:{from:[70,106],to:[42,104]}}),
+        frame('Не делай', 'Не поднимай ногу слишком высоко и не прогибай поясницу.', pose({head:[70,104], shoulderL:[90,108], shoulderR:[100,110], elbowL:[68,106], elbowR:[112,136], wristL:[42,104], wristR:[120,160], hipL:[138,126], hipR:[148,130], kneeL:[136,156], kneeR:[174,92], ankleL:[136,180], ankleR:[210,82]}), {bad:true, warningLine:[[96,112],[150,130]]})
+      ]
+    },
+    'dead-bug': {
+      note: 'Вид сбоку/сверху условный: поясница остаётся стабильной, движение выполняют противоположные рука и нога.',
+      frames: [
+        frame('1 · Старт', 'Руки вверх, бедра над тазом, колени согнуты.', pose({head:[54,146], shoulderL:[76,144], shoulderR:[86,148], elbowL:[78,112], elbowR:[88,114], wristL:[80,82], wristR:[92,84], hipL:[126,146], hipR:[136,150], kneeL:[150,114], kneeR:[160,118], ankleL:[174,88], ankleR:[184,92]})),
+        frame('2 · Диагональ', 'Медленно опускай противоположные руку и ногу, не отрывая поясницу.', pose({head:[54,146], shoulderL:[76,144], shoulderR:[86,148], elbowL:[62,124], elbowR:[98,116], wristL:[42,104], wristR:[108,86], hipL:[126,146], hipR:[136,150], kneeL:[150,114], kneeR:[166,156], ankleL:[174,88], ankleR:[204,170]}), {arrow:{from:[90,112],to:[108,86]}}),
+        frame('Не делай', 'Не позволяй пояснице отрываться от пола при увеличении амплитуды.', pose({head:[54,146], shoulderL:[76,144], shoulderR:[86,148], elbowL:[62,124], elbowR:[98,116], wristL:[42,104], wristR:[108,86], hipL:[126,130], hipR:[136,134], kneeL:[150,114], kneeR:[166,156], ankleL:[174,88], ankleR:[204,170]}), {bad:true, warningLine:[[82,150],[136,134]]})
+      ]
+    },
+    'bar-hang': {
+      note: 'Вид спереди: руки прямые, корпус спокойный, плечи не «вдавливаются» в уши.',
+      frames: [
+        frame('Правильно', 'Хват устойчивый. Шея длинная, рёбра собраны.', pose({head:[150,74], shoulderL:[132,98], shoulderR:[168,98], elbowL:[126,72], elbowR:[174,72], wristL:[120,42], wristR:[180,42], hipL:[140,140], hipR:[160,140], kneeL:[140,180], kneeR:[160,180], ankleL:[140,218], ankleR:[160,218]}), {prop:'bar'}),
+        frame('Активный вис', 'Слегка опусти плечи от ушей, не сгибая локти.', pose({head:[150,68], shoulderL:[132,92], shoulderR:[168,92], elbowL:[126,68], elbowR:[174,68], wristL:[120,42], wristR:[180,42], hipL:[140,134], hipR:[160,134], kneeL:[140,176], kneeR:[160,176], ankleL:[140,216], ankleR:[160,216]}), {prop:'bar', arrow:{from:[132,104],to:[132,92]}}),
+        frame('Не делай', 'Не «висни» пассивно, если плечо чувствует нестабильность или боль.', pose({head:[150,82], shoulderL:[132,110], shoulderR:[168,110], elbowL:[126,78], elbowR:[174,78], wristL:[120,42], wristR:[180,42], hipL:[140,150], hipR:[160,150], kneeL:[140,186], kneeR:[160,186], ankleL:[140,218], ankleR:[160,218]}), {prop:'bar', bad:true, warningLine:[[128,106],[172,106]]})
+      ]
+    },
+    'scap-pull': {
+      note: 'Вид спереди: локти всё время прямые; движение происходит за счёт лопаток и положения плеч.',
+      frames: [
+        frame('1 · Нижняя фаза', 'Руки прямые, тело спокойно.', pose({head:[150,82], shoulderL:[132,108], shoulderR:[168,108], elbowL:[126,78], elbowR:[174,78], wristL:[120,42], wristR:[180,42], hipL:[140,150], hipR:[160,150], kneeL:[140,186], kneeR:[160,186], ankleL:[140,218], ankleR:[160,218]}), {prop:'bar'}),
+        frame('2 · Лопатки вниз', 'Опусти плечи от ушей и слегка подними тело без сгибания локтей.', pose({head:[150,70], shoulderL:[132,94], shoulderR:[168,94], elbowL:[126,70], elbowR:[174,70], wristL:[120,42], wristR:[180,42], hipL:[140,138], hipR:[160,138], kneeL:[140,180], kneeR:[160,180], ankleL:[140,216], ankleR:[160,216]}), {prop:'bar', arrow:{from:[150,116],to:[150,92]}}),
+        frame('Не делай', 'Не превращай движение в обычное подтягивание и не сгибай локти.', pose({head:[150,64], shoulderL:[132,90], shoulderR:[168,90], elbowL:[136,68], elbowR:[164,68], wristL:[120,42], wristR:[180,42], hipL:[140,132], hipR:[160,132], kneeL:[140,176], kneeR:[160,176], ankleL:[140,214], ankleR:[160,214]}), {prop:'bar', bad:true, warningLine:[[126,72],[138,66]]})
+      ]
+    },
+    'assisted-pull': {
+      note: 'Вид спереди: помощь снижает нагрузку, но траектория остаётся как у обычного подтягивания.',
+      frames: [
+        frame('1 · Старт', 'Активный вис. Корпус собран, помощь ногой/резиной умеренная.', pose({head:[150,78], shoulderL:[132,104], shoulderR:[168,104], elbowL:[126,74], elbowR:[174,74], wristL:[120,42], wristR:[180,42], hipL:[140,146], hipR:[160,146], kneeL:[138,184], kneeR:[164,178], ankleL:[138,218], ankleR:[178,202]}), {prop:'bar-support'}),
+        frame('2 · Подъём', 'Тяни грудь к перекладине, локти вниз и назад.', pose({head:[150,52], shoulderL:[132,78], shoulderR:[168,78], elbowL:[126,92], elbowR:[174,92], wristL:[120,42], wristR:[180,42], hipL:[140,122], hipR:[160,122], kneeL:[138,164], kneeR:[164,158], ankleL:[138,202], ankleR:[178,184]}), {prop:'bar-support', arrow:{from:[150,128],to:[150,84]}}),
+        frame('Не делай', 'Не отталкивайся ногами рывком и не запрокидывай голову к перекладине.', pose({head:[150,42], shoulderL:[132,78], shoulderR:[168,78], elbowL:[126,92], elbowR:[174,92], wristL:[120,42], wristR:[180,42], hipL:[140,126], hipR:[160,126], kneeL:[132,154], kneeR:[170,154], ankleL:[120,174], ankleR:[190,174]}), {prop:'bar-support', bad:true, warningLine:[[145,44],[166,54]]})
+      ]
     }
-    if(!id) return;
-    const kind=kindById[id]||'mobility', ps=phases[kind]||['Старт','Конец'];
-    const intro=content.querySelector('.modal-intro');
-    const block=document.createElement('div');block.className='ga-wrap';block.innerHTML=`<div class="ga-headrow"><div class="ga-title">Схема правильного выполнения</div><span class="ga-badge">покадровая анимация</span></div><div class="ga-stage"><div class="ga-frame active"><span class="ga-phase">${ps[0]}</span>${scene(kind,0)}</div><div class="ga-frame"><span class="ga-phase">${ps[1]}</span>${scene(kind,1)}</div></div><p class="ga-caption">${captions[kind]||'Сохраняй контроль движения и нейтральное положение корпуса.'}</p><div class="ga-note">Схема намеренно упрощена: важны положение суставов и траектория, а не реалистичная внешность.</div>`;
-    intro?.insertAdjacentElement('afterend',block);
-    const frames=block.querySelectorAll('.ga-frame');let i=0;
-    const timer=setInterval(()=>{if(!document.body.contains(block)||document.getElementById('exerciseModal')?.classList.contains('hidden')){clearInterval(timer);return;}frames.forEach((f,j)=>f.classList.toggle('active',j===i));i=1-i;},850);
+  };
+
+  guides['bench-squat'] = guides['chair-squat'];
+
+  function propSvg(type) {
+    if (type === 'chair') return `<g stroke="${COLORS.prop}" stroke-width="6" fill="none" stroke-linecap="round"><line x1="175" y1="122" x2="225" y2="122"/><line x1="180" y1="122" x2="180" y2="216"/><line x1="218" y1="122" x2="218" y2="216"/><line x1="222" y1="72" x2="222" y2="122"/></g>`;
+    if (type === 'wall-right') return `<line x1="224" y1="28" x2="224" y2="220" stroke="${COLORS.prop}" stroke-width="8" stroke-linecap="round"/>`;
+    if (type === 'box-right') return `<rect x="172" y="102" width="58" height="112" rx="8" fill="#eef2f7" stroke="${COLORS.prop}" stroke-width="5"/>`;
+    if (type === 'bar') return `<line x1="82" y1="34" x2="218" y2="34" stroke="${COLORS.prop}" stroke-width="8" stroke-linecap="round"/>`;
+    if (type === 'bar-support') return `<line x1="82" y1="34" x2="218" y2="34" stroke="${COLORS.prop}" stroke-width="8" stroke-linecap="round"/><rect x="110" y="205" width="80" height="12" rx="6" fill="#dbe4ef"/>`;
+    return '';
   }
 
-  injectStyle();
-  document.addEventListener('click',e=>{const t=e.target.closest('[data-exercise-id]');if(t){window.__lastExerciseId=t.dataset.exerciseId;setTimeout(addAnimation,0);setTimeout(addAnimation,80);}});
-  const obs=new MutationObserver(()=>{if(!document.getElementById('exerciseModal')?.classList.contains('hidden')) addAnimation();});
-  obs.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+  function personSvg(p, isBad) {
+    const stroke = isBad ? '#243247' : COLORS.ink;
+    const limb = (a,b,back=false) => `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${back ? COLORS.muted : stroke}" stroke-width="10" stroke-linecap="round" opacity="${back?0.58:1}"/>`;
+    const joint = pt => `<circle cx="${pt[0]}" cy="${pt[1]}" r="5.5" fill="${COLORS.joint}" stroke="${stroke}" stroke-width="3"/>`;
+    const torso = `<path d="M ${p.shoulderL[0]} ${p.shoulderL[1]} L ${p.shoulderR[0]} ${p.shoulderR[1]} L ${p.hipR[0]} ${p.hipR[1]} L ${p.hipL[0]} ${p.hipL[1]} Z" fill="${COLORS.body}" stroke="${stroke}" stroke-width="4" stroke-linejoin="round"/>`;
+    return [
+      limb(p.shoulderR,p.elbowR,true), limb(p.elbowR,p.wristR,true),
+      limb(p.hipR,p.kneeR,true), limb(p.kneeR,p.ankleR,true),
+      torso,
+      limb(p.shoulderL,p.elbowL), limb(p.elbowL,p.wristL),
+      limb(p.hipL,p.kneeL), limb(p.kneeL,p.ankleL),
+      `<line x1="${(p.shoulderL[0]+p.shoulderR[0])/2}" y1="${(p.shoulderL[1]+p.shoulderR[1])/2}" x2="${p.head[0]}" y2="${p.head[1]+15}" stroke="${stroke}" stroke-width="8" stroke-linecap="round"/>`,
+      `<circle cx="${p.head[0]}" cy="${p.head[1]}" r="17" fill="#F5F8FC" stroke="${stroke}" stroke-width="4"/>`,
+      joint(p.elbowL), joint(p.elbowR), joint(p.kneeL), joint(p.kneeR)
+    ].join('');
+  }
+
+  function arrowSvg(a) {
+    if (!a) return '';
+    const [x1,y1] = a.from, [x2,y2] = a.to;
+    const ang = Math.atan2(y2-y1,x2-x1), s=10;
+    const p2=[x2-s*Math.cos(ang-Math.PI/6),y2-s*Math.sin(ang-Math.PI/6)];
+    const p3=[x2-s*Math.cos(ang+Math.PI/6),y2-s*Math.sin(ang+Math.PI/6)];
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${COLORS.accent}" stroke-width="5" stroke-linecap="round"/><polygon points="${x2},${y2} ${p2[0]},${p2[1]} ${p3[0]},${p3[1]}" fill="${COLORS.accent}"/>`;
+  }
+
+  function lineSvg(line, bad=false) {
+    if (!line) return '';
+    return `<line x1="${line[0][0]}" y1="${line[0][1]}" x2="${line[1][0]}" y2="${line[1][1]}" stroke="${bad?COLORS.bad:COLORS.good}" stroke-width="4" stroke-dasharray="8 7" stroke-linecap="round"/>`;
+  }
+
+  function svgFrame(f) {
+    return `<svg viewBox="0 0 300 250" aria-hidden="true">
+      <rect x="1" y="1" width="298" height="248" rx="16" fill="#fff"/>
+      <line x1="26" y1="220" x2="274" y2="220" stroke="${COLORS.grid}" stroke-width="3"/>
+      ${propSvg(f.prop)}
+      ${f.guideLine ? lineSvg(f.guideLine,false) : ''}
+      ${f.warningLine ? lineSvg(f.warningLine,true) : ''}
+      ${personSvg(f.pose, f.bad)}
+      ${arrowSvg(f.arrow)}
+    </svg>`;
+  }
+
+  function visualSection(id) {
+    const g = guides[id];
+    if (!g) return null;
+    const section = document.createElement('section');
+    section.className = 'tech-visual-v2';
+    section.setAttribute('data-tech-visual-v2', id);
+    section.innerHTML = `
+      <div class="tech-visual-v2__head">
+        <div><h3>Визуальная техника</h3><p>${g.note}</p></div>
+        <span class="tech-visual-v2__badge">ПОКАДРОВАЯ СХЕМА</span>
+      </div>
+      <div class="tech-visual-v2__frames">
+        ${g.frames.map(f => `<article class="tech-frame ${f.bad?'tech-frame--bad':''}">
+          <div class="tech-frame__label"><span class="tech-frame__dot"></span>${f.label}</div>
+          ${svgFrame(f)}
+          <div class="tech-frame__cue">${f.cue}</div>
+        </article>`).join('')}
+      </div>
+      <div class="tech-visual-v2__legend">
+        <span class="tech-legend-item"><span class="tech-legend-line"></span> траектория / ориентир</span>
+        <span class="tech-legend-item"><span class="tech-legend-line tech-legend-line--bad"></span> ошибка / нежелательное положение</span>
+      </div>`;
+    return section;
+  }
+
+  function mount(id) {
+    const content = document.getElementById('exerciseModalContent');
+    if (!content) return;
+    content.querySelectorAll('[data-tech-visual-v2]').forEach(el => el.remove());
+    const section = visualSection(id);
+    if (!section) return;
+    const intro = content.querySelector('.modal-intro');
+    if (intro) intro.insertAdjacentElement('afterend', section);
+    else content.prepend(section);
+  }
+
+  const originalOpen = window.openExerciseModal;
+  if (typeof originalOpen === 'function') {
+    window.openExerciseModal = function(id) {
+      originalOpen(id);
+      requestAnimationFrame(() => mount(id));
+    };
+  }
+
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-exercise-id]');
+    if (!trigger) return;
+    const id = trigger.dataset.exerciseId;
+    requestAnimationFrame(() => mount(id));
+  }, true);
 })();
