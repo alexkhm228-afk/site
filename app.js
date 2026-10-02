@@ -30,31 +30,31 @@ function buildWorkout(sel,seed=0,avoid=new Set()){const p=phasePlan(sel);return{
 
 function visualFor(ex){return exerciseVisuals[ex.id]}
 function visualThumb(ex){const v=visualFor(ex);return v?.urls?.[0]||''}
-function visualBadge(ex){const v=visualFor(ex);if(!v)return'';return `<span class="visual-badge ${v.exact?'exact':'equivalent'}">${v.exact?'точный визуал':'заменено/эквивалент'}</span>`}
+function imgTag(url,alt,className=''){return `<img${className?` class="${className}"`:''} src="${url}" alt="${alt}" loading="lazy" onerror="this.hidden=true;this.parentElement.classList.add('image-load-failed')">`}
 
 function renderWorkout(sel,seed=0,avoid=new Set()){
   const w=buildWorkout(sel,seed,avoid),result=document.getElementById('result');
   document.getElementById('resultTitle').textContent=`${labels.place[sel.place]} · ${labels.goal[sel.goal]}`;
   document.getElementById('resultMeta').textContent=`${labels.level[sel.level]} · ${sel.duration} минут · ${w.rounds} ${w.rounds===1?'круг':'круга'} · отдых ${w.rest}`;
-  document.getElementById('workoutList').innerHTML=w.items.map((ex,i)=>`<button class="workout-item" type="button" data-exercise-id="${ex.id}"><img class="workout-thumb" src="${visualThumb(ex)}" alt="" loading="lazy"><div class="workout-copy"><div class="workout-title-row"><strong>${ex.name}</strong>${visualBadge(ex)}</div><small>${labels.type[ex.type]} · ${levelNamesShort[profileFor(ex).difficulty]} · ${ex.desc}</small><span class="instruction-link">Инструкция и визуал →</span></div><div class="workout-dose">${ex.dose}</div></button>`).join('');
+  document.getElementById('workoutList').innerHTML=w.items.map(ex=>`<button class="workout-item" type="button" data-exercise-id="${ex.id}"><div class="workout-thumb-wrap">${imgTag(visualThumb(ex),'','workout-thumb')}</div><div class="workout-copy"><div class="workout-title-row"><strong>${ex.name}</strong></div><small>${labels.type[ex.type]} · ${levelNamesShort[profileFor(ex).difficulty]} · ${ex.desc}</small><span class="instruction-link">Инструкция и визуал →</span></div><div class="workout-dose">${ex.dose}</div></button>`).join('');
   lastWorkoutIds=new Set(w.items.map(x=>x.id));result.classList.remove('hidden');result.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function renderCatalog(){
   const place=document.getElementById('catalogPlace').value,type=document.getElementById('catalogType').value,grid=document.getElementById('catalogGrid');
   const filtered=exercises.filter(ex=>(place==='all'||ex.places.includes(place))&&(type==='all'||ex.type===type));
-  grid.innerHTML=filtered.map(ex=>`<button class="exercise-card" type="button" data-exercise-id="${ex.id}"><div class="catalog-visual"><img src="${visualThumb(ex)}" alt="${ex.name}" loading="lazy"></div><div class="exercise-card-body"><div class="exercise-card-top"><h3>${ex.name}</h3>${visualBadge(ex)}</div><p>${ex.desc}</p><div class="tags"><span class="tag">${labels.type[ex.type]}</span><span class="tag">${ex.dose}</span>${ex.places.map(p=>`<span class="tag">${labels.place[p]}</span>`).join('')}</div><span class="card-action">Открыть инструкцию →</span></div></button>`).join('');
+  grid.innerHTML=filtered.map(ex=>`<button class="exercise-card" type="button" data-exercise-id="${ex.id}"><div class="catalog-visual">${imgTag(visualThumb(ex),ex.name)}</div><div class="exercise-card-body"><div class="exercise-card-top"><h3>${ex.name}</h3></div><p>${ex.desc}</p><div class="tags"><span class="tag">${labels.type[ex.type]}</span><span class="tag">${ex.dose}</span>${ex.places.map(p=>`<span class="tag">${labels.place[p]}</span>`).join('')}</div><span class="card-action">Открыть инструкцию →</span></div></button>`).join('');
   const count=document.getElementById('catalogCount');if(count)count.textContent=`${filtered.length} из ${exercises.length} упражнений`;
 }
 
 function stopVisualTimer(){if(visualTimer){clearInterval(visualTimer);visualTimer=null}}
 function buildVisualBlock(ex){
   const v=visualFor(ex);if(!v)return'';
-  const isNative=v.nativeAnimation, dynamic=v.animate&&!isNative&&v.urls.length>1;
-  const frames=v.urls.map((url,i)=>`<figure class="visual-frame"><img src="${url}" alt="${ex.name} — ${v.urls.length>1?`кадр ${i+1}`:'визуал'}" loading="eager"><figcaption>${v.urls.length>1?`Кадр ${i+1}`:'Ключевая поза'}</figcaption></figure>`).join('');
-  return `<section class="exercise-visual-section"><div class="visual-head"><div><p class="eyebrow">Визуальная инструкция</p><h3>${dynamic?'Мини-анимация':isNative?'Готовая анимация':'Ключевая поза'}</h3></div>${visualBadge(ex)}</div><div class="motion-preview ${dynamic?'is-animated':''}"><img id="motionPreviewImage" src="${v.urls[0]}" alt="${ex.name}"></div><p class="visual-explain">${v.note|| (dynamic?'Мини-анимация переключает только исходные кадры — промежуточные позы не дорисовываются.':'Статическое упражнение показывается одной корректной позой.')}</p>${v.urls.length>1?`<div class="visual-frames">${frames}</div>`:''}<div class="visual-credit">${v.credit} · <a href="${v.sourceUrl}" target="_blank" rel="noreferrer">источник</a></div></section>`;
+  const isNative=v.nativeAnimation,dynamic=v.animate&&!isNative&&v.urls.length>1;
+  const frames=v.urls.map((url,i)=>`<figure class="visual-frame">${imgTag(url,`${ex.name} — ${v.urls.length>1?`кадр ${i+1}`:'визуал'}`)}<figcaption>${v.urls.length>1?`Кадр ${i+1}`:'Ключевая поза'}</figcaption></figure>`).join('');
+  return `<section class="exercise-visual-section"><div class="visual-head"><div><p class="eyebrow">Визуальная инструкция</p><h3>${dynamic?'Движение':isNative?'Дыхание':'Ключевая поза'}</h3></div></div><div class="motion-preview ${dynamic?'is-animated':''}">${imgTag(v.urls[0],ex.name)}</div>${v.urls.length>1?`<div class="visual-frames">${frames}</div>`:''}</section>`;
 }
-function startVisual(ex){stopVisualTimer();const v=visualFor(ex);if(!v||v.nativeAnimation||!v.animate||v.urls.length<2)return;const img=document.getElementById('motionPreviewImage');if(!img)return;const seq=v.urls.length===3?[0,1,2,1]:v.urls.map((_,i)=>i);let n=0;visualTimer=setInterval(()=>{n=(n+1)%seq.length;img.src=v.urls[seq[n]]},850)}
+function startVisual(ex){stopVisualTimer();const v=visualFor(ex);if(!v||v.nativeAnimation||!v.animate||v.urls.length<2)return;const img=document.querySelector('#exerciseModal .motion-preview img');if(!img)return;const seq=v.urls.length===3?[0,1,2,1]:v.urls.map((_,i)=>i);let n=0;visualTimer=setInterval(()=>{n=(n+1)%seq.length;img.hidden=false;img.src=v.urls[seq[n]]},850)}
 
 function ensureExerciseModal(){if(document.getElementById('exerciseModal'))return;const modal=document.createElement('div');modal.id='exerciseModal';modal.className='exercise-modal hidden';modal.innerHTML=`<div class="exercise-modal-backdrop" data-close-modal></div><section class="exercise-dialog" role="dialog" aria-modal="true" aria-labelledby="exerciseModalTitle"><button class="modal-close" type="button" data-close-modal aria-label="Закрыть">×</button><div id="exerciseModalContent"></div></section>`;document.body.appendChild(modal);modal.addEventListener('click',e=>{if(e.target.closest('[data-close-modal]'))closeExerciseModal()})}
 function openExerciseModal(id){
