@@ -4,240 +4,77 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0f172a" />
-  <meta name="description" content="Информационный сайт по гимнастике с подбором комплекса, каталогом упражнений и визуальными инструкциями." />
+  <meta name="description" content="Информационный справочник по гимнастике: подбор комплексов и визуальные инструкции упражнений." />
   <title>Гимнастика — подбор комплекса</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="visuals.css?v=4" />
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="#top" aria-label="На главную">
-      <span class="brand-mark">Г</span>
-      <span>Гимнастика</span>
-    </a>
-    <nav class="nav">
-      <a href="#builder">Подобрать комплекс</a>
-      <a href="#catalog">Каталог</a>
-      <a href="#about">О визуалах</a>
-    </nav>
+    <a class="brand" href="#top" aria-label="На главную"><span class="brand-mark">Г</span><span>Гимнастика</span></a>
+    <nav class="nav"><a href="#builder">Подобрать комплекс</a><a href="#catalog">Упражнения</a><a href="#safety">Безопасность</a></nav>
   </header>
 
   <main id="top">
     <section class="hero section-pad">
       <div class="hero-copy">
-        <p class="eyebrow">Справочник по упражнениям</p>
-        <h1>Подбор гимнастического комплекса под дом, зал и площадку</h1>
-        <p class="lead">Теперь в инструкциях используются не самодельные рисунки, а готовые открытые SVG-кадры упражнений. Для динамических движений вверху окна показывается небольшая анимация из тех же кадров, а для статических поз — одна корректная ключевая картинка.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#builder">Собрать комплекс</a>
-          <a class="button ghost" href="#catalog">Посмотреть упражнения</a>
-        </div>
-        <div class="hero-stats">
-          <div><strong>3</strong><span>места занятий</span></div>
-          <div><strong>20</strong><span>упражнений в каталоге</span></div>
-          <div><strong>100%</strong><span>упражнений с визуалом</span></div>
-        </div>
+        <p class="eyebrow">Информационный справочник</p>
+        <h1>Гимнастика под твои условия</h1>
+        <p class="lead">Выбери место занятия, уровень, цель и время — сайт соберёт комплекс для дома, зала или уличной площадки. Полный каталог сохранён: упражнения не удаляются только из-за отсутствия картинки.</p>
+        <div class="hero-actions"><a class="button primary" href="#builder">Подобрать комплекс</a><a class="button ghost" href="#catalog">Смотреть упражнения</a></div>
+        <div class="hero-stats"><div><strong>3</strong><span>места занятий</span></div><div><strong>6</strong><span>целей тренировок</span></div><div><strong>61</strong><span>упражнение</span></div></div>
       </div>
       <div class="hero-card">
-        <div class="mini-label">Что изменилось</div>
-        <h2>Нажми на упражнение</h2>
+        <div class="mini-label">Визуальные инструкции</div>
+        <h2>Готовые кадры вместо самодельных фигур</h2>
         <ol class="mini-workout">
-          <li><span>01</span>Смотри мини-анимацию из кадров</li>
-          <li><span>02</span>Проверь ключевые кадры техники</li>
-          <li><span>03</span>Читай пошаговую инструкцию</li>
-          <li><span>04</span>Узнай частые ошибки и подсказки</li>
+          <li><span>01</span>Динамика — мини-анимация из реальных кадров</li>
+          <li><span>02</span>Статика — одна корректная ключевая поза</li>
+          <li><span>03</span>Точный источник и лицензия указаны в инструкции</li>
+          <li><span>04</span>Если точного визуала нет — меняется только конкретное упражнение</li>
         </ol>
-        <p class="mini-tip">Статические упражнения вроде виса, планки и стульчика показываются одной корректной позой без фиктивной анимации.</p>
+        <div class="mini-tip">Основной источник: Workout Guide; дополнительные открытые материалы — Wikimedia Commons.</div>
       </div>
     </section>
 
     <section class="section-pad section-muted" id="builder">
-      <div class="section-head">
-        <p class="eyebrow">Конструктор</p>
-        <h2>Подбери свой комплекс</h2>
-        <p>Алгоритм сильнее различает место, цель и уровень, поэтому варианты комплексов теперь заметно разнообразнее.</p>
-      </div>
-
+      <div class="section-head"><p class="eyebrow">Конструктор</p><h2>Подбери свой комплекс</h2><p>Параметры заметно влияют на состав тренировки: место, уровень, цель и длительность учитываются отдельно.</p></div>
       <form class="builder" id="workoutForm">
-        <fieldset>
-          <legend>1. Где будешь заниматься?</legend>
-          <div class="option-grid three">
-            <label class="choice-card">
-              <input type="radio" name="place" value="home" checked>
-              <span class="choice-icon">⌂</span>
-              <strong>Дома</strong>
-              <small>Коврик, стена, стул, минимальный инвентарь</small>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="place" value="gym">
-              <span class="choice-icon">▦</span>
-              <strong>В зале</strong>
-              <small>Гантели, тренажёры, скамья</small>
-            </label>
-            <label class="choice-card">
-              <input type="radio" name="place" value="outdoor">
-              <span class="choice-icon">↟</span>
-              <strong>На площадке</strong>
-              <small>Турник, лавка, свободное пространство</small>
-            </label>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>2. Уровень подготовки</legend>
-          <div class="segmented">
-            <label><input type="radio" name="level" value="beginner" checked><span>Новичок</span></label>
-            <label><input type="radio" name="level" value="intermediate"><span>Средний</span></label>
-            <label><input type="radio" name="level" value="advanced"><span>Продвинутый</span></label>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>3. Главная цель</legend>
-          <div class="goal-grid">
-            <label><input type="radio" name="goal" value="mobility" checked><span>Мобильность</span></label>
-            <label><input type="radio" name="goal" value="strength"><span>Сила</span></label>
-            <label><input type="radio" name="goal" value="posture"><span>Осанка</span></label>
-            <label><input type="radio" name="goal" value="flexibility"><span>Гибкость</span></label>
-            <label><input type="radio" name="goal" value="endurance"><span>Выносливость</span></label>
-            <label><input type="radio" name="goal" value="fullbody"><span>Всё тело</span></label>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>4. Сколько времени?</legend>
-          <div class="segmented four">
-            <label><input type="radio" name="duration" value="10"><span>10 мин</span></label>
-            <label><input type="radio" name="duration" value="20" checked><span>20 мин</span></label>
-            <label><input type="radio" name="duration" value="30"><span>30 мин</span></label>
-            <label><input type="radio" name="duration" value="45"><span>45 мин</span></label>
-          </div>
-        </fieldset>
-
+        <fieldset><legend>1. Где будешь заниматься?</legend><div class="option-grid three">
+          <label class="choice-card"><input type="radio" name="place" value="home" checked><span class="choice-icon">⌂</span><strong>Дома</strong><small>Собственный вес, коврик, стул или стена</small></label>
+          <label class="choice-card"><input type="radio" name="place" value="gym"><span class="choice-icon">▰</span><strong>В зале</strong><small>Гантели, скамья, блочные и кардио-тренажёры</small></label>
+          <label class="choice-card"><input type="radio" name="place" value="outdoor"><span class="choice-icon">↟</span><strong>На площадке</strong><small>Турник, скамья и свободное пространство</small></label>
+        </div></fieldset>
+        <fieldset><legend>2. Уровень подготовки</legend><div class="segmented">
+          <label><input type="radio" name="level" value="beginner" checked><span>Новичок</span></label><label><input type="radio" name="level" value="intermediate"><span>Средний</span></label><label><input type="radio" name="level" value="advanced"><span>Продвинутый</span></label>
+        </div></fieldset>
+        <fieldset><legend>3. Главная цель</legend><div class="goal-grid">
+          <label><input type="radio" name="goal" value="mobility" checked><span>Мобильность</span></label><label><input type="radio" name="goal" value="strength"><span>Сила</span></label><label><input type="radio" name="goal" value="posture"><span>Осанка</span></label><label><input type="radio" name="goal" value="flexibility"><span>Гибкость</span></label><label><input type="radio" name="goal" value="endurance"><span>Выносливость</span></label><label><input type="radio" name="goal" value="fullbody"><span>Всё тело</span></label>
+        </div></fieldset>
+        <fieldset><legend>4. Сколько времени?</legend><div class="segmented four">
+          <label><input type="radio" name="duration" value="10"><span>10 мин</span></label><label><input type="radio" name="duration" value="20" checked><span>20 мин</span></label><label><input type="radio" name="duration" value="30"><span>30 мин</span></label><label><input type="radio" name="duration" value="45"><span>45 мин</span></label>
+        </div></fieldset>
         <button class="button primary large" type="submit">Собрать комплекс</button>
       </form>
-
-      <section class="result hidden" id="result" aria-live="polite">
-        <div class="result-top">
-          <div>
-            <p class="eyebrow">Твой комплекс</p>
-            <h3 id="resultTitle">Комплекс</h3>
-            <p id="resultMeta"></p>
-          </div>
-          <div class="result-actions">
-            <button class="button ghost compact" type="button" id="shuffleButton">Другой вариант</button>
-          </div>
-        </div>
-        <div class="workout-list" id="workoutList"></div>
-        <p class="result-note">Все упражнения в каталоге имеют визуал. Если для упражнения используется близкий эквивалент кадра, это отдельно отмечается в инструкции.</p>
-      </section>
+      <section class="result hidden" id="result" aria-live="polite"><div class="result-top"><div><p class="eyebrow">Твой комплекс</p><h3 id="resultTitle">Комплекс</h3><p id="resultMeta"></p></div><button class="button ghost compact" type="button" id="shuffleButton">Другой вариант</button></div><div class="workout-list" id="workoutList"></div><div class="result-note">Нажми на любое упражнение — откроется визуал, техника, подсказка и частая ошибка.</div></section>
     </section>
 
     <section class="section-pad" id="catalog">
-      <div class="section-head split-head">
-        <div>
-          <p class="eyebrow">Каталог</p>
-          <h2>Упражнения</h2>
-          <p>У всех упражнений есть визуальная инструкция. Нажми на карточку, чтобы открыть мини-анимацию, ключевые кадры и технику выполнения.</p>
-        </div>
-        <div class="catalog-controls">
-          <select id="catalogPlace" aria-label="Фильтр по месту">
-            <option value="all">Все места</option>
-            <option value="home">Дом</option>
-            <option value="gym">Зал</option>
-            <option value="outdoor">Площадка</option>
-          </select>
-          <select id="catalogType" aria-label="Фильтр по типу">
-            <option value="all">Все типы</option>
-            <option value="warmup">Разминка</option>
-            <option value="main">Основная часть</option>
-            <option value="cooldown">Заминка</option>
-          </select>
-        </div>
-      </div>
+      <div class="section-head split-head"><div><p class="eyebrow">Полная база</p><h2>61 упражнение</h2><p id="catalogCount">61 упражнение</p></div><div class="catalog-controls"><select id="catalogPlace"><option value="all">Все места</option><option value="home">Дом</option><option value="gym">Зал</option><option value="outdoor">Площадка</option></select><select id="catalogType"><option value="all">Все типы</option><option value="warmup">Разминка</option><option value="main">Основная часть</option><option value="cooldown">Заминка</option></select></div></div>
       <div class="catalog-grid" id="catalogGrid"></div>
     </section>
 
-    <section class="section-pad section-muted" id="about">
-      <div class="section-head">
-        <p class="eyebrow">О визуалах</p>
-        <h2>Откуда взяты картинки</h2>
-        <p>Визуалы берутся из открытой библиотеки Workout Guide: 302 упражнения и 906 SVG-кадров. Код и документация доступны по MIT, а визуальные ассеты лицензированы по CC BY-SA 4.0. Для статических упражнений сайт показывает одну ключевую позу, для динамических — последовательность готовых кадров. Источник указан в каждом окне упражнения.</p>
-      </div>
-    </section>
+    <section class="section-pad safety" id="safety"><div class="section-head"><p class="eyebrow">Важно</p><h2>Техника и безопасность</h2></div><div class="safety-grid"><article><span>01</span><h3>Разогрейся</h3><p>Начинай с лёгкой разминки и постепенно повышай интенсивность.</p></article><article><span>02</span><h3>Контролируй технику</h3><p>Качество движения важнее скорости и количества повторений.</p></article><article><span>03</span><h3>Не работай через боль</h3><p>Острая или нарастающая боль — причина остановиться.</p></article><article><span>04</span><h3>Учитывай ограничения</h3><p>При травмах и хронических заболеваниях нагрузку лучше согласовать со специалистом.</p></article></div><p class="disclaimer">Сайт носит информационный характер и не заменяет медицинскую диагностику, лечение или персональную работу со специалистом.</p></section>
   </main>
 
-  <footer class="footer">
-    <div>
-      <strong>Гимнастика</strong>
-      <p>Информационный справочник и подбор комплексов.</p>
-    </div>
-    <a href="#top">Наверх ↑</a>
-  </footer>
+  <footer class="footer"><div><strong>Гимнастика</strong><p>Справочник, конструктор комплексов и визуальные инструкции.</p></div><a href="#top">Наверх ↑</a></footer>
 
-  <div class="modal hidden" id="exerciseModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-modal></div>
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal-close" type="button" id="closeModalButton" aria-label="Закрыть">×</button>
-      <div class="modal-scroll">
-        <div class="modal-top">
-          <div>
-            <p class="eyebrow">Инструкция</p>
-            <h3 id="modalTitle">Упражнение</h3>
-            <p id="modalSubtitle"></p>
-          </div>
-          <div class="modal-tags" id="modalTags"></div>
-        </div>
-
-        <section class="motion-preview-block">
-          <div class="preview-head">
-            <div>
-              <h4 id="previewHeading">Мини-анимация</h4>
-              <p class="preview-note" id="previewNote">Анимация строится только из исходных кадров упражнения.</p>
-            </div>
-            <span class="demo-chip" id="previewChip">из кадров</span>
-          </div>
-          <div class="preview-stage" id="previewStage"></div>
-        </section>
-
-        <section class="frames-block">
-          <div class="frames-head">
-            <h4 id="framesHeading">Кадры техники</h4>
-            <a class="source-link" id="visualSourceLink" target="_blank" rel="noreferrer">Открыть источник визуала</a>
-          </div>
-          <p class="visual-note" id="visualNote"></p>
-          <div class="frames-grid" id="framesGrid"></div>
-          <div class="license-box" id="licenseBox"></div>
-        </section>
-
-        <div class="instruction-grid">
-          <section class="instruction-card wide">
-            <h4>Как выполнять</h4>
-            <ol id="modalSteps"></ol>
-          </section>
-          <section class="instruction-card">
-            <h4>Подсказка по технике</h4>
-            <p id="modalCue"></p>
-          </section>
-          <section class="instruction-card">
-            <h4>Частая ошибка</h4>
-            <p id="modalMistake"></p>
-          </section>
-          <section class="instruction-card">
-            <h4>Дыхание</h4>
-            <p id="modalBreath"></p>
-          </section>
-          <section class="instruction-card">
-            <h4>Безопасность</h4>
-            <p id="modalSafety"></p>
-          </section>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="app.js?v=3"></script>
+  <script src="data.js?v=4"></script>
+  <script src="guides.js?v=4"></script>
+  <script src="visuals.js?v=4"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
