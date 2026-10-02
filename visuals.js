@@ -1,4 +1,4 @@
-const VISUAL_CDN = 'https://cdn.jsdelivr.net/npm/@bryllim/workout-guide@1.0.0/assets';
+const VISUAL_CDN = 'https://raw.githubusercontent.com/bryllim/workout-guide/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets';
 
 function wg(slug, options = {}) {
   const frames = options.frames || [1,2,3];
@@ -6,7 +6,6 @@ function wg(slug, options = {}) {
     kind: 'workout-guide', slug, frames,
     animate: options.animate !== false && frames.length > 1,
     exact: options.exact !== false,
-    note: options.note || '',
     urls: frames.map(n => `${VISUAL_CDN}/${slug}/frame-${n}.svg`),
     sourceUrl: `https://bryllim.github.io/workout-guide/exercises/${slug}/`,
     credit: 'Workout Guide · Bryl Lim · CC BY-SA 4.0'
@@ -19,56 +18,51 @@ function commons(url, sourceUrl, credit, options = {}) {
     animate: !!options.nativeAnimation,
     nativeAnimation: !!options.nativeAnimation,
     exact: options.exact !== false,
-    note: options.note || '', sourceUrl, credit
+    sourceUrl, credit
   };
 }
 
 const exerciseVisuals = {
-  march: wg('running', { exact:false, note:'Исходный «шаг на месте» заменён на «лёгкий бег на месте»: близкая кардио-разминка с готовым корректным визуалом.' }),
-  joints: wg('inchworm', { exact:false, note:'Общая суставная разминка заменена на Inchworm — динамическую разминку всего тела с готовыми кадрами.' }),
+  march: wg('running', { exact:false }),
+  joints: wg('inchworm', { exact:false }),
   'arm-circles': wg('arm-circles'),
   'cat-cow': wg('cat-cow-stretch'),
-  'hip-openers': wg('fire-hydrant', { exact:false, note:'«Раскрытие тазобедренных» заменено на Fire Hydrant — близкое упражнение на контролируемое отведение бедра.' }),
+  'hip-openers': wg('fire-hydrant', { exact:false }),
   'jumping-jacks': wg('jumping-jack'),
-
   'chair-squat': commons(
     'https://commons.wikimedia.org/wiki/Special:FilePath/Exercise_Chair_Squat.png?width=1024',
     'https://commons.wikimedia.org/wiki/File:Exercise_Chair_Squat.png',
-    'BruceBlaus · Wikimedia Commons · CC BY-SA 4.0',
-    { note:'Точная иллюстрация приседания к стулу. Поскольку источник содержит один учебный рисунок, ложная анимация не создаётся.' }
+    'BruceBlaus · Wikimedia Commons · CC BY-SA 4.0'
   ),
   'wall-push': wg('wall-push-up'),
   'incline-push': wg('incline-push-up'),
   'glute-bridge': wg('glute-bridge'),
   'bird-dog': wg('bird-dog'),
   'dead-bug': wg('dead-bug'),
-  'knee-plank': wg('incline-push-up', { frames:[1], animate:false, exact:false, note:'«Планка с колен» заменена на «планку на высокой опоре» — близкую регрессию планки для новичка с точной картинкой стартовой позиции incline push-up.' }),
+  'knee-plank': wg('incline-push-up', { frames:[1], animate:false, exact:false }),
   plank: wg('plank', { frames:[2], animate:false }),
   'reverse-lunge': wg('reverse-lunge'),
   'calf-raise': wg('calf-raise'),
   'wall-sit': wg('wall-sit', { frames:[2], animate:false }),
-
   'goblet-squat': wg('goblet-squat'),
   'db-row': wg('one-arm-dumbbell-row'),
   'db-press': wg('dumbbell-bench-press'),
-  'step-up': wg('step-up', { note:'На визуале может использоваться дополнительный вес; сама траектория зашагивания соответствует упражнению.' }),
+  'step-up': wg('step-up'),
   'cable-row': wg('seated-row'),
-  bike: wg('assault-bike', { exact:false, note:'Велотренажёр заменён на эйрбайк: тот же циклический кардио-паттерн на стационарном велосипеде, но с готовыми кадрами.' }),
-
+  bike: wg('assault-bike', { exact:false }),
   'bench-squat': commons(
     'https://commons.wikimedia.org/wiki/Special:FilePath/Exercise_Chair_Squat.png?width=1024',
     'https://commons.wikimedia.org/wiki/File:Exercise_Chair_Squat.png',
     'BruceBlaus · Wikimedia Commons · CC BY-SA 4.0',
-    { exact:false, note:'Для приседа к скамье используется точная по механике схема приседа к опоре; отличается только сама опора.' }
+    { exact:false }
   ),
   'bar-hang': wg('dead-hang', { frames:[2], animate:false }),
   'scap-pull': wg('scapular-pull-up'),
-  'assisted-pull': wg('assisted-pull-up', { exact:false, note:'Визуал показывает вариант подтягивания с помощью. Способ ассистирования может отличаться от резины/опоры на площадке, но основная траектория подтягивания совпадает.' }),
+  'assisted-pull': wg('assisted-pull-up', { exact:false }),
   'bench-dip': wg('bench-dip'),
   'mountain-climber': wg('mountain-climber'),
   'high-knees': wg('high-knees'),
-
-  'chest-open': wg('band-pull-apart', { exact:false, note:'Упражнение заменено на разведение резинки — близкое движение для раскрытия плечевого пояса и работы над осанкой.' }),
+  'chest-open': wg('band-pull-apart', { exact:false }),
   'thoracic-rot': wg('torso-twist-stretch'),
   'world-stretch': wg('worlds-greatest-stretch'),
   'hamstring-fold': wg('hamstring-stretch', { frames:[2], animate:false }),
@@ -78,26 +72,19 @@ const exerciseVisuals = {
     'https://commons.wikimedia.org/wiki/Special:FilePath/Diaphragmatic_breathing.gif',
     'https://commons.wikimedia.org/wiki/File:Diaphragmatic_breathing.gif',
     'John Pierce · Wikimedia Commons · CC0',
-    { nativeAnimation:true, note:'Это готовая исходная анимация диафрагмального дыхания, а не синтетическая интерполяция.' }
+    { nativeAnimation:true }
   ),
   'pec-stretch': wg('doorway-chest-stretch', { frames:[2], animate:false }),
-
-  'step-jacks': wg('lateral-shuffle', { exact:false, note:'Step-jacks заменены на боковые шаги в темпе — близкую низкоинтенсивную кардио-разминку без необходимости придумывать несуществующие кадры.' }),
-  'ankle-rocks': wg('wall-calf-stretch', { exact:false, note:'Используется близкий голеностопный паттерн у стены: движение голени вперёд при сохранении пятки на опоре.' }),
-  'brisk-walk': wg('running', { exact:false, note:'Быстрый шаг заменён на лёгкий бег — близкую циклическую кардио-нагрузку с корректными готовыми кадрами.' }),
+  'step-jacks': wg('lateral-shuffle', { exact:false }),
+  'ankle-rocks': wg('wall-calf-stretch', { exact:false }),
+  'brisk-walk': wg('running', { exact:false }),
   'bodyweight-squat': wg('bodyweight-squat'),
   'single-leg-bridge': wg('single-leg-glute-bridge'),
-  'side-plank-knees': commons(
-    'https://commons.wikimedia.org/wiki/Special:FilePath/Modifiedsideplank.jpg?width=1200',
-    'https://commons.wikimedia.org/wiki/File:Modifiedsideplank.jpg',
-    'U.S. Army · Wikimedia Commons · CC BY 2.0',
-    { note:'Статическая модифицированная боковая планка показывается одной фотографией.' }
-  ),
+  'side-plank-knees': wg('side-plank', { frames:[2], animate:false, exact:false }),
   'shadow-boxing': commons(
     'https://commons.wikimedia.org/wiki/Special:FilePath/Photos_taken_at_Zebra_Boxing_Club_on_20th_September_2025_15.jpg?width=1200',
     'https://commons.wikimedia.org/wiki/File:Photos_taken_at_Zebra_Boxing_Club_on_20th_September_2025_15.jpg',
-    'Wikimedia Commons · CC BY-SA 4.0',
-    { note:'Используется реальная фотография shadow boxing. Анимация из выдуманных промежуточных поз не создаётся.' }
+    'Wikimedia Commons · CC BY-SA 4.0'
   ),
   'heel-taps': wg('heel-tap'),
   'lat-pulldown': wg('lat-pulldown'),
@@ -107,12 +94,12 @@ const exerciseVisuals = {
   'pallof-press': wg('pallof-press'),
   'incline-walk': wg('treadmill-incline-walk'),
   'inverted-row': wg('inverted-row'),
-  'walking-lunge': wg('walking-lunge', { note:'На визуале может использоваться дополнительный вес; траектория шага и выпада соответствует упражнению.' }),
+  'walking-lunge': wg('walking-lunge'),
   'jog-intervals': wg('running'),
-  'hip-90-90': wg('butterfly-stretch', { exact:false, note:'Переходы 90/90 заменены на «Бабочку» — близкую по цели мобилизацию тазобедренных суставов для того же уровня подготовки.' }),
-  'ankle-mobility': wg('wall-calf-stretch', { exact:false, note:'Используется близкое движение для мобильности голеностопа у стены.' }),
-  'deep-squat-hold': wg('bodyweight-squat', { frames:[2], animate:false, exact:false, note:'Для статического глубокого приседа используется нижняя позиция bodyweight squat; анимация намеренно отключена.' }),
-  'knee-drive': wg('high-knees', { exact:false, note:'Подъём колена показан через тот же паттерн high knees; упражнение выполняется в более спокойном темпе.' }),
+  'hip-90-90': wg('butterfly-stretch', { exact:false }),
+  'ankle-mobility': wg('wall-calf-stretch', { exact:false }),
+  'deep-squat-hold': wg('bodyweight-squat', { frames:[2], animate:false, exact:false }),
+  'knee-drive': wg('high-knees', { exact:false }),
   'hip-flexor-stretch': wg('kneeling-hip-flexor-stretch', { frames:[2], animate:false }),
   'calf-stretch': wg('wall-calf-stretch', { frames:[2], animate:false })
 };
@@ -136,32 +123,40 @@ const exerciseReplacements = {
   },
   bike: {
     name:'Эйрбайк', desc:'Циклическая кардио-работа на стационарном велосипеде с участием рук.', dose:'3–6 мин',
-    guide:{steps:['Отрегулируй седло так, чтобы нога в нижней точке оставалась слегка согнутой.','Начни педалировать и синхронно двигать рукояти.','Держи корпус устойчивым и плечи расслабленными.','Поддерживай ровную интенсивность заданное время.'],tip:'Не начинай слишком резко — сначала найди устойчивый ритм.',mistake:'Раскачивание корпуса и чрезмерное давление руками на рукояти.'}
+    guide:{steps:['Отрегулируй седло так, чтобы нога в нижней точке оставалась слегка согнутой.','Начни педалировать и синхронно двигать рукояти.','Держи корпус устойчивым и плечи расслабленными.','Поддерживай ровную интенсивность заданное время.'],tip:'Не начинай слишком резко — сначала найди ровный ритм.',mistake:'Избыточное раскачивание корпуса и слишком тяжёлое сопротивление.'}
   },
   'chest-open': {
-    name:'Разведение резинки перед грудью', desc:'Контролируемое разведение резинки для плечевого пояса и осанки.', dose:'10–15 раз',
-    guide:{steps:['Возьми лёгкую резинку двумя руками перед собой.','Подними руки примерно до уровня груди.','Разведи руки в стороны, мягко сводя лопатки.','Под контролем вернись в исходное положение.'],tip:'Плечи остаются опущенными, рёбра не выпячиваются.',mistake:'Сильный прогиб поясницы и движение рывком.'}
+    name:'Разведение резинки перед собой', desc:'Упражнение для задней поверхности плеч и контроля лопаток.', dose:'12–15 раз',
+    guide:{steps:['Возьми резинку перед собой прямыми руками на уровне груди.','Слегка опусти плечи и держи рёбра собранными.','Разведи руки в стороны, мягко сводя лопатки.','Под контролем вернись в исходное положение.'],tip:'Движение должно происходить в плечах и лопатках, без прогиба поясницы.',mistake:'Плечи поднимаются к ушам или корпус отклоняется назад.'}
   },
   'step-jacks': {
-    name:'Боковые шаги в темпе', desc:'Низкоинтенсивная кардио-разминка с быстрыми шагами в стороны.', dose:'45–60 сек',
-    guide:{steps:['Встань в лёгкую спортивную стойку.','Сделай несколько быстрых шагов в одну сторону.','Поменяй направление без скрещивания ног.','Сохраняй мягкие колени и ровный ритм.'],tip:'Оставайся невысоко и двигайся легко на стопах.',mistake:'Скрещивание стоп и резкая остановка на прямых коленях.'}
+    name:'Боковые шаги в темпе', desc:'Низкоинтенсивная кардио-разминка с быстрыми шагами вправо и влево.', dose:'45–60 сек',
+    guide:{steps:['Встань в лёгкую спортивную стойку.','Сделай несколько быстрых коротких шагов вправо.','Сразу смени направление и вернись влево.','Держи колени мягкими и корпус устойчивым.'],tip:'Шаги короткие и лёгкие; не скрещивай ноги.',mistake:'Слишком высокий прыжок вместо контролируемых боковых шагов.'}
+  },
+  'ankle-rocks': {
+    name:'Мобилизация голеностопа у стены', desc:'Мягкое движение колена вперёд над стопой при сохранении пятки на полу.', dose:'8–12/сторону',
+    guide:{steps:['Поставь стопу перед стеной, пятка остаётся на полу.','Мягко направь колено вперёд к стене по линии второго-третьего пальца стопы.','Остановись до отрыва пятки.','Вернись назад и повтори.'],tip:'Пятка всё время прижата к полу.',mistake:'Колено заваливается внутрь или пятка отрывается.'}
   },
   'brisk-walk': {
-    name:'Лёгкий бег', desc:'Спокойный бег в разговорном темпе для кардио-разминки или основной части.', dose:'2–5 мин',
-    guide:{steps:['Начни с спокойного темпа.','Делай короткий естественный шаг.','Держи плечи и кисти расслабленными.','Поддерживай темп, в котором дыхание остаётся контролируемым.'],tip:'Лёгкость шага важнее скорости.',mistake:'Слишком длинный шаг и жёсткое приземление далеко впереди корпуса.'}
+    name:'Лёгкий бег', desc:'Спокойная циклическая кардио-нагрузка с контролируемым темпом.', dose:'3–5 мин',
+    guide:{steps:['Начни с очень лёгкого темпа.','Делай короткий естественный шаг и мягко приземляйся.','Работай руками без лишнего напряжения.','Держи темп, при котором можешь произнести короткую фразу.'],tip:'Плечи расслаблены, шаг тихий и лёгкий.',mistake:'Слишком длинный шаг и жёсткое приземление.'}
+  },
+  'side-plank-knees': {
+    name:'Боковая планка', desc:'Статическое упражнение на боковую линию корпуса и стабильность плеча.', dose:'20–30 сек/сторону',
+    guide:{steps:['Ляг на бок и поставь локоть точно под плечом.','Выпрями ноги и поставь стопы друг на друга или одну перед другой.','Подними таз и выстрой тело в прямую линию.','Удерживай положение и затем смени сторону.'],tip:'Не проваливай плечо и держи таз высоко.',mistake:'Таз опускается к полу или корпус разворачивается вперёд.'}
   },
   'hip-90-90': {
-    name:'Бабочка', desc:'Мягкая мобилизация тазобедренных суставов в положении сидя.', dose:'30–45 сек',
-    guide:{steps:['Сядь и соедини стопы перед собой.','Позволь коленям мягко опуститься в стороны.','Сохрани спину длинной и таз устойчивым.','Удерживай комфортное натяжение без пружинящих движений.'],tip:'Не дави руками на колени; амплитуда приходит постепенно.',mistake:'Сильное округление спины ради большей глубины.'}
+    name:'Растяжка «Бабочка»', desc:'Мягкая мобилизация тазобедренных суставов в положении сидя.', dose:'40–60 сек',
+    guide:{steps:['Сядь и соедини подошвы стоп перед собой.','Подтяни стопы на комфортное расстояние к тазу.','Выпрями спину и позволь коленям мягко опуститься в стороны.','Удерживай положение без пружинящих движений.'],tip:'Сохраняй длинную спину и расслабляй бёдра на выдохе.',mistake:'Сильное давление руками на колени и округление спины.'}
   }
 };
 
 function applyExerciseReplacements() {
-  Object.entries(exerciseReplacements).forEach(([id, patch]) => {
+  for (const [id, replacement] of Object.entries(exerciseReplacements)) {
     const ex = exercises.find(item => item.id === id);
-    if (!ex) return;
-    if (patch.name) ex.name = patch.name;
-    if (patch.desc) ex.desc = patch.desc;
-    if (patch.dose) ex.dose = patch.dose;
-  });
+    if (!ex) continue;
+    ex.name = replacement.name;
+    ex.desc = replacement.desc;
+    ex.dose = replacement.dose;
+  }
 }
