@@ -1,0 +1,11 @@
+.instruction-grid-detailed{grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);align-items:start}
+.detailed-steps{border:1px solid #dfe6f0;border-radius:18px;padding:18px 20px;background:#fff}
+.detailed-steps h3{margin-top:0;margin-bottom:14px}
+.detailed-steps .steps-list{display:grid;gap:12px;margin:0;padding-left:26px}
+.detailed-steps .steps-list li{padding-left:5px;line-height:1.62;color:#374151}
+.detailed-steps .steps-list li::marker{font-weight:800;color:#2563eb}
+.instruction-note strong{display:block;margin-bottom:6px}
+.instruction-note p{line-height:1.58}
+.instruction-note.info{border-left:4px solid #2563eb;background:#eff6ff}
+.instruction-note.neutral{border-left:4px solid #7c3aed;background:#f5f3ff}
+@media(max-width:760px){.instruction-grid-detailed{grid-template-columns:1fr}.detailed-steps{padding:16px}}
